@@ -9,9 +9,9 @@
 <link rel="icon" href="icon-192.png">
 <meta name="theme-color" content="#0b1220">
 <style>
-:root{--bg:#0b1220;--card:rgba(255,255,255,.07);--card2:rgba(255,255,255,.13);--text:#eef2ff;--muted:#9aa7c7;--acc:#7c3aed;--acc2:#2563eb;--border:rgba(255,255,255,.16);--red:#ef4444;--green:#22c55e;--glassblur:18px}
+:root{--bg:#0a0a0d;--card:rgba(255,255,255,.07);--card2:rgba(255,255,255,.13);--text:#eef2ff;--muted:#9aa7c7;--acc:#7c3aed;--acc2:#2563eb;--border:rgba(255,255,255,.16);--red:#ef4444;--green:#22c55e;--glassblur:18px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:radial-gradient(1200px 600px at 80% -10%,#312e81 0%,transparent 60%),radial-gradient(1000px 500px at -10% 110%,#1e3a8a 0%,transparent 55%),var(--bg);color:var(--text);min-height:100vh}
+body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:radial-gradient(900px 420px at 85% -10%,rgba(255,80,60,.13) 0%,transparent 60%),radial-gradient(800px 400px at -10% 110%,rgba(255,150,50,.08) 0%,transparent 55%),var(--bg);color:var(--text);min-height:100vh}
 body.light{--bg:#eef1f8;--card:rgba(255,255,255,.55);--card2:rgba(255,255,255,.8);--text:#131a2e;--muted:#5b6a8f;--border:rgba(20,30,60,.14);background:radial-gradient(1200px 600px at 80% -10%,#c7d2fe 0%,transparent 60%),radial-gradient(1000px 500px at -10% 110%,#bfdbfe 0%,transparent 55%),var(--bg)}
 button{font-family:inherit;cursor:pointer}
 input,select{font-family:inherit}
@@ -43,8 +43,8 @@ header.top .sp{flex:1}
 @keyframes pulse{50%{transform:scale(1.5)}}
 .view{animation:fade .3s cubic-bezier(.22,1,.36,1)}
 @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-h2.sec{font-size:16px;margin:18px 0 10px}
-.song{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:10px 12px;margin-bottom:8px;cursor:pointer;transition:transform .18s cubic-bezier(.34,1.56,.64,1),background .15s}
+h2.sec{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:24px 0 10px;font-weight:700}
+.song{display:flex;align-items:center;gap:13px;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:11px 13px;margin-bottom:9px;cursor:pointer;transition:transform .18s cubic-bezier(.34,1.56,.64,1),background .15s}
 .song:active{transform:scale(.97)}
 .song.playing{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 22%,transparent)}
 .song img,.song .ph{width:46px;height:46px;border-radius:12px;object-fit:cover;background:linear-gradient(135deg,var(--acc),var(--acc2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
@@ -138,6 +138,15 @@ body.light #lyricsBox .ln.act{color:#131a2e}
 @keyframes vgFlow{to{background-position:300% 0}}
 .vgBar{position:absolute;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);width:190px;height:8px;border-radius:99px;background:linear-gradient(90deg,#4285f4,#9b72cb,#d96570,#f2a65a,#4285f4);background-size:300% 100%;filter:blur(1px);box-shadow:0 0 24px 6px rgba(155,114,203,.65),0 0 44px 12px rgba(66,133,244,.4);animation:vgFlow 2.2s linear infinite,vgPulse 1.1s ease-in-out infinite alternate}
 @keyframes vgPulse{from{transform:translateX(-50%) scaleX(.82)}to{transform:translateX(-50%) scaleX(1.08)}}
+.grp{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:16px 2px 4px}
+.grp:first-child{margin-top:2px}
+#sheet{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);display:flex;align-items:flex-end;justify-content:center}
+.sheetCard{background:#16161d;border:1px solid var(--border);border-radius:24px 24px 0 0;width:100%;max-width:640px;padding:14px 16px calc(18px + env(safe-area-inset-bottom));animation:sheetUp .32s cubic-bezier(.22,1,.36,1)}
+body.light .sheetCard{background:#f4f6fc}
+@keyframes sheetUp{from{transform:translateY(46px);opacity:.4}to{transform:none;opacity:1}}
+#sheetTitle{font-weight:700;font-size:16px;padding:6px 4px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sheetItem{display:flex;width:100%;align-items:center;gap:12px;background:none;border:none;color:var(--text);font-size:15px;padding:13px 6px;border-top:1px solid var(--border);text-align:left}
+.sheetItem:active{background:var(--card2)}
 </style>
 </head>
 <body>
@@ -147,10 +156,10 @@ body.light #lyricsBox .ln.act{color:#131a2e}
   <div class="authCard">
     <div class="logo">🎵</div>
     <h1>Dhun</h1>
-    <p>Apne gaane, bina ads — bilkul tumhare style me.</p>
-    <input id="gateName" type="text" placeholder="Tumhara naam">
-    <button class="btn" id="gateBtn">Shuru Karo →</button>
-    <p style="margin-top:12px;font-size:12px">App pehli baar khul rahi hai — naam likho, bas.</p>
+    <p>Your music. No ads. Just play.</p>
+    <input id="gateName" type="text" placeholder="Your name">
+    <button class="btn" id="gateBtn">Get Started →</button>
+    <p style="margin-top:12px;font-size:12px">First launch — just your name, nothing else.</p>
   </div>
 </div>
 
@@ -164,32 +173,32 @@ body.light #lyricsBox .ln.act{color:#131a2e}
   </header>
 
   <section id="view-home" class="view">
-    <h2 class="sec">👋 <span id="helloName">Dost</span>, suno kuch achha</h2>
-    <div class="box"><h3>🎧 Apne gaane jodo</h3><p class="mut">Phone se MP3/MP4 files chuno — gaane app ke andar save ho jayenge, phir bina internet ke bhi chalenge. Saath me .lrc file hogi to lyrics bhi jud jayenge.</p><label class="btn" style="display:block;text-align:center;cursor:pointer">➕ Gaane / Video Jodo<input type="file" id="filePick" accept="audio/*,video/*,.lrc" multiple class="hidden"></label></div>
-    <h2 class="sec">🕘 Haal hi me sune</h2>
+    <h2 class="sec">👋 Hi, <span id="helloName">Friend</span></h2>
+    <div class="box"><h3>🎧 Add Your Music</h3><p class="mut">Pick MP3/MP4 files from your phone — they are saved inside the app and play offline. Add a matching .lrc file and lyrics come along too.</p><label class="btn" style="display:block;text-align:center;cursor:pointer">➕ Add Songs / Videos<input type="file" id="filePick" accept="audio/*,video/*,.lrc" multiple class="hidden"></label></div>
+    <h2 class="sec">Recently Played</h2>
     <div id="recentList"></div>
-    <h2 class="sec">❤️ Pasandeeda</h2>
+    <h2 class="sec">Favourites</h2>
     <div id="favList"></div>
   </section>
 
   <section id="view-library" class="view hidden">
-    <div class="searchbar"><input id="libSearch" type="text" placeholder="Gaana, singer, saal khojo…"><button class="icobtn" id="micBtn" title="Voice se khojo">🎤</button></div>
-    <div class="tabs"><button id="tabSongs" class="sel">🎵 Gaane</button><button id="tabVideos">🎬 Video</button></div>
+    <div class="searchbar"><input id="libSearch" type="text" placeholder="Search title, artist, year…"><button class="icobtn" id="micBtn" title="Voice search">🎤</button></div>
+    <div class="tabs"><button id="tabSongs" class="sel">🎵 Songs</button><button id="tabVideos">🎬 Videos</button></div>
     <div id="libList"></div>
   </section>
 
   <section id="view-free" class="view hidden">
-    <h2 class="sec">🆓 Free Gaane (legal download ke saath)</h2>
-    <p class="mut" style="margin:0 0 8px">Ye gaane khule license wale hain — suno, aur pasand aaye to ⬇️ dabakar library me download kar lo, phir bina internet ke chalenge.</p>
+    <h2 class="sec">🆓 Free Music</h2>
+    <p class="mut" style="margin:0 0 8px">Open-licensed songs — stream them, or tap ⬇️ Save to keep them in your library for offline listening.</p>
     <div class="tabs"><button id="srcJam" class="sel">🎧 Jamendo</button><button id="srcIA">🏛️ Internet Archive</button></div>
     <div class="optrow" style="margin:4px 0 2px"><button class="optbtn" data-chip="hindi">🇮🇳 Hindi</button><button class="optbtn" data-chip="rap">🎤 Rap</button><button class="optbtn" data-chip="folk">🪕 Folk</button><button class="optbtn" data-chip="english">🌍 English</button><button class="optbtn" data-chip="punjabi">🥁 Punjabi</button><button class="optbtn" data-chip="lofi">🌙 Lo-Fi</button></div>
-    <div class="searchbar"><input id="jamSearch" type="text" placeholder="Free gaana khojo…"><button class="btn small" id="jamGo">Khojo</button></div>
-    <div id="jamList"><div class="empty">Upar khoj karke dekho — ya thoda ruko, mashhoor free gaane aa rahe hain…</div></div>
+    <div class="searchbar"><input id="jamSearch" type="text" placeholder="Search free songs…"><button class="btn small" id="jamGo">Search</button></div>
+    <div id="jamList"><div class="empty">Search above — or wait a moment, popular free songs are loading…</div></div>
   </section>
 
   <section id="view-lists" class="view hidden">
-    <h2 class="sec">📂 Meri Playlists</h2>
-    <div class="searchbar"><input id="plName" type="text" placeholder="Nayi playlist ka naam…"><button class="btn small" id="plAdd">Banao</button></div>
+    <h2 class="sec">📂 My Playlists</h2>
+    <div class="searchbar"><input id="plName" type="text" placeholder="New playlist name…"><button class="btn small" id="plAdd">Create</button></div>
     <div id="plList"></div>
     <div id="plDetail"></div>
   </section>
@@ -197,17 +206,21 @@ body.light #lyricsBox .ln.act{color:#131a2e}
   <section id="view-settings" class="view hidden">
     <h2 class="sec">⚙️ Settings</h2>
     <div class="box">
-      <div class="swrow"><span>🌗 Theme<br><span class="mut">Dark, Light ya phone ke hisaab se</span></span><span class="optrow"><button class="optbtn" data-theme="dark">🌙 Dark</button><button class="optbtn" data-theme="light">☀️ Light</button><button class="optbtn" data-theme="system">📱 System</button></span></div>
-      <div class="swrow"><span>🎨 Rang (Accent)<br><span class="mut">Pura app isi rang me rangega</span></span><span class="optrow"><button class="swatch" data-acc="violet" style="background:linear-gradient(135deg,#7c3aed,#2563eb)"></button><button class="swatch" data-acc="pink" style="background:linear-gradient(135deg,#ec4899,#f43f5e)"></button><button class="swatch" data-acc="green" style="background:linear-gradient(135deg,#16a34a,#0d9488)"></button><button class="swatch" data-acc="orange" style="background:linear-gradient(135deg,#ea580c,#f59e0b)"></button><button class="swatch" data-acc="sky" style="background:linear-gradient(135deg,#0284c7,#06b6d4)"></button><button class="swatch" data-acc="red" style="background:linear-gradient(135deg,#dc2626,#7c2d12)"></button></span></div>
-      <div class="swrow"><span>🖼️ Player Background<br><span class="mut">Gaana chalte waqt peeche kya dikhe</span></span><span class="optrow"><button class="optbtn" data-plbg="blur">🌫️ Blur</button><button class="optbtn" data-plbg="grad">🌈 Rang</button><button class="optbtn" data-plbg="solid">⬛ Saada</button></span></div>
-      <div class="swrow"><span>📊 Visualizer (nachti lines)<br><span class="mut">Gaana bajte hi slider ke neeche nachne wali lines</span></span><button class="tgl" id="tglViz"></button></div>
-      <div class="swrow"><span>✨ Animations<br><span class="mut">Liquid glass wali saari halchal on/off</span></span><button class="tgl" id="tglAnim"></button></div>
-      <div class="swrow"><span>🎤 "Hey Dhun" bolkar jagao<br><span class="mut">App khula ho to bina haath lagaye — "Hey Dhun" bolo, phir hukum do</span></span><button class="tgl" id="tglWake"></button></div>
-      <div class="swrow"><span>🔊 Touch par awaaz<br><span class="mut">Button dabane par halki si click ki awaaz</span></span><button class="tgl" id="tglSfx"></button></div>
-      <div class="swrow"><span>👤 Naam badlo</span><span style="display:flex;gap:6px"><input id="setName" type="text" style="padding:8px;border-radius:9px;border:1px solid var(--border);background:rgba(0,0,0,.18);color:var(--text)"><button class="btn small" id="saveNameBtn">Save</button></span></div>
+      <div class="grp">Appearance</div>
+      <div class="swrow"><span>🌗 Theme<br><span class="mut">Dark, Light, or match your phone</span></span><span class="optrow"><button class="optbtn" data-theme="dark">🌙 Dark</button><button class="optbtn" data-theme="light">☀️ Light</button><button class="optbtn" data-theme="system">📱 System</button></span></div>
+      <div class="swrow"><span>🎨 Accent Colour<br><span class="mut">The whole app follows this colour</span></span><span class="optrow"><button class="swatch" data-acc="violet" style="background:linear-gradient(135deg,#ff3b30,#ff9500)"></button><button class="swatch" data-acc="pink" style="background:linear-gradient(135deg,#ff5e8a,#c9184a)"></button><button class="swatch" data-acc="green" style="background:linear-gradient(135deg,#22c55e,#0d9488)"></button><button class="swatch" data-acc="orange" style="background:linear-gradient(135deg,#f59e0b,#d97706)"></button><button class="swatch" data-acc="sky" style="background:linear-gradient(135deg,#38bdf8,#2563eb)"></button><button class="swatch" data-acc="red" style="background:linear-gradient(135deg,#a78bfa,#6d28d9)"></button></span></div>
+      <div class="grp">Player</div>
+      <div class="swrow"><span>🖼️ Player Background<br><span class="mut">What shows behind the song that is playing</span></span><span class="optrow"><button class="optbtn" data-plbg="blur">🌫️ Blur</button><button class="optbtn" data-plbg="grad">🌈 Gradient</button><button class="optbtn" data-plbg="solid">⬛ Plain</button></span></div>
+      <div class="swrow"><span>📊 Visualizer<br><span class="mut">Animated bars under the slider while music plays</span></span><button class="tgl" id="tglViz"></button></div>
+      <div class="swrow"><span>✨ Animations<br><span class="mut">All liquid-glass motion, on or off</span></span><button class="tgl" id="tglAnim"></button></div>
+      <div class="grp">Voice & Sound</div>
+      <div class="swrow"><span>🎤 Wake with "Hey Dhun"<br><span class="mut">While the app is open, say "Hey Dhun", then your command — hands-free</span></span><button class="tgl" id="tglWake"></button></div>
+      <div class="swrow"><span>🔊 Touch Sounds<br><span class="mut">A soft click when you tap buttons</span></span><button class="tgl" id="tglSfx"></button></div>
+      <div class="grp">Profile</div>
+      <div class="swrow"><span>👤 Your Name</span><span style="display:flex;gap:6px"><input id="setName" type="text" style="padding:8px;border-radius:9px;border:1px solid var(--border);background:rgba(0,0,0,.18);color:var(--text)"><button class="btn small" id="saveNameBtn">Save</button></span></div>
     </div>
-    <div class="box"><h3>ℹ️ Dhun ke baare me</h3><p class="mut">Dhun v1.0 — tumhare phone ke gaano/video ka personal player + legal free gaano ka khazana. Bilkul ₹0, koi ads nahi. Data isi phone me rehta hai.</p>
-    <button class="btn" style="background:var(--red)" id="wipeBtn">🗑️ Sab Data Saaf Karo</button></div>
+    <div class="box"><h3>ℹ️ About Dhun</h3><p class="mut">Dhun — your personal MP3/MP4 player with a legal free-music library. No ads, ₹0. Your data stays on this phone.</p>
+    <button class="btn" style="background:var(--red)" id="wipeBtn">🗑️ Erase All Data</button></div>
   </section>
 </div>
 
@@ -224,7 +237,7 @@ body.light #lyricsBox .ln.act{color:#131a2e}
 <div id="player">
   <div id="plBg"></div>
   <div class="inner">
-  <button class="icobtn" id="plClose">⬇️ Band Karo</button>
+  <button class="icobtn" id="plClose">⌄ Close</button>
   <video id="vi" class="hidden" playsinline></video>
   <div class="coverWrap"><img id="plCover" class="cover" alt=""></div>
   <div class="pt" id="plTitle">—</div>
@@ -239,18 +252,19 @@ body.light #lyricsBox .ln.act{color:#131a2e}
   <div class="modeRow">
     <button id="mShuffle">🔀 Shuffle</button>
     <button id="mRepeat">🔁 Repeat</button>
-    <button id="mFav">🤍 Pasand</button>
+    <button id="mFav">🤍 Favourite</button>
     <button id="mLyrics">📜 Lyrics</button>
   </div>
-  <div id="lyricsBox" class="hidden"><div class="mut">Is gaane ki lyrics nahi mili.<br>Gaane ke saath usi naam ki .lrc file jodoge to yahan synchronized lyrics chalenge.</div></div>
+  <div id="lyricsBox" class="hidden"><div class="mut">No lyrics for this song yet.<br>Add a matching .lrc file with the song and synced lyrics will play here.</div></div>
   <div id="queueBox"></div>
   </div>
 </div>
 
+<div id="sheet" class="hidden"><div class="sheetCard"><div id="sheetTitle">Song</div><div id="sheetActs"></div></div></div>
 <nav class="bottom hidden" id="bottomNav">
   <button data-nav="home" class="act"><span class="ic">🏠</span>Home</button>
   <button data-nav="library"><span class="ic">🎶</span>Library</button>
-  <button data-nav="free"><span class="ic">🆓</span>Free Gaane</button>
+  <button data-nav="free"><span class="ic">🆓</span>Free Music</button>
   <button data-nav="lists"><span class="ic">📂</span>Playlists</button>
   <button data-nav="settings"><span class="ic">⚙️</span>Settings</button>
 </nav>
@@ -316,7 +330,7 @@ async function addFiles(fileList){
     added++;
   }
   await loadLib();
-  alert(added?added+' gaane/video jud gaye ✅':'Koi file nahi judi — MP3/MP4 chuno.');
+  alert(added?added+' file(s) added ✅':'Nothing added — pick MP3/MP4 files.');
 }
 $('filePick').addEventListener('change',e=>{addFiles(e.target.files);e.target.value='';});
 /* ---------- Render ---------- */
@@ -334,16 +348,13 @@ function songRow(it,ctx){
   +(it.hasCover?'<img data-cov="'+it.id+'" alt="">':'<span class="ph">'+(it.kind==='video'?'🎬':'🎵')+'</span>')
   +'<div style="flex:1;min-width:0"><div class="tt">'+esc(it.title)+'</div><div class="mt">'+esc([it.artist,it.year,it.kind==='video'?'Video':''].filter(Boolean).join(' · ')||it.name)+'</div></div>'
   +'<span class="acts"><button class="icobtn'+(fav?' loved':'')+'" data-fav="'+it.id+'">'+(fav?'❤️':'🤍')+'</button>'
-  +'<button class="icobtn" data-addpl="'+it.id+'">➕</button>'
-  +(ctx==='lib'?'<button class="icobtn" data-tag="'+it.id+'" title="Singer/year dhundho">🏷️</button><button class="icobtn" data-del="'+it.id+'">🗑️</button>':'')
+  +'<button class="icobtn" data-more="'+it.id+'">⋯</button>'
   +'</span></div>';
 }
 function bindRows(scope){
   scope.querySelectorAll('[data-play]').forEach(el=>el.onclick=e=>{if(e.target.closest('button'))return;playFromList(el.dataset.play);});
   scope.querySelectorAll('[data-fav]').forEach(b=>b.onclick=()=>{toggleFav(b.dataset.fav);});
-  scope.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{if(confirm('Ye file app se hata dun? (Phone ki asal file delete nahi hogi)')){await idbDel(b.dataset.del);favs=favs.filter(x=>x!==b.dataset.del);saveSets();loadLib();}});
-  scope.querySelectorAll('[data-tag]').forEach(b=>b.onclick=()=>tagFix(b.dataset.tag));
-  scope.querySelectorAll('[data-addpl]').forEach(b=>b.onclick=()=>addToPlaylistFlow(b.dataset.addpl));
+  scope.querySelectorAll('[data-more]').forEach(b=>b.onclick=()=>openSheet(b.dataset.more));
   paintCovers(scope);
 }
 function toggleFav(id){if(favs.includes(id))favs=favs.filter(x=>x!==id);else favs.push(id);saveSets();renderHome();renderLib();updFavBtn();}
@@ -351,14 +362,14 @@ function renderHome(){
   const rec=recents.map(id=>lib.find(x=>x.id===id)).filter(Boolean).slice(0,6);
   $('recentList').innerHTML=rec.length?rec.map(it=>songRow(it)).join(''):'<div class="empty">Abhi kuch nahi suna — Library se ya Free Gaano se shuru karo 🎧</div>';
   const fv=favs.map(id=>lib.find(x=>x.id===id)).filter(Boolean);
-  $('favList').innerHTML=fv.length?fv.map(it=>songRow(it)).join(''):'<div class="empty">Kisi gaane par 🤍 dabao, wo yahan aayega.</div>';
+  $('favList').innerHTML=fv.length?fv.map(it=>songRow(it)).join(''):'<div class="empty">Tap 🤍 on any song and it will appear here.</div>';
   bindRows($('recentList'));bindRows($('favList'));
   if(profile)$('helloName').textContent=profile.name;
 }
 function renderLib(){
   const q=($('libSearch').value||'').toLowerCase();
   const list=lib.filter(it=>it.kind===libTab&&(!q||(it.title+' '+(it.artist||'')+' '+(it.year||'')).toLowerCase().includes(q)));
-  $('libList').innerHTML=list.length?list.map(it=>songRow(it,'lib')).join(''):'<div class="empty">'+(libTab==='audio'?'Abhi koi gaana nahi — Home se "Gaane Jodo" dabao.':'Abhi koi video nahi — Home se MP4 file jodo.')+'</div>';
+  $('libList').innerHTML=list.length?list.map(it=>songRow(it,'lib')).join(''):'<div class="empty">'+(libTab==='audio'?'No songs yet — add some from Home.':'No videos yet — add an MP4 from Home.')+'</div>';
   bindRows($('libList'));
 }
 $('libSearch').addEventListener('input',renderLib);
@@ -366,31 +377,41 @@ $('tabSongs').onclick=()=>{libTab='audio';$('tabSongs').classList.add('sel');$('
 $('tabVideos').onclick=()=>{libTab='video';$('tabVideos').classList.add('sel');$('tabSongs').classList.remove('sel');renderLib();};
 /* ---------- Playlists ---------- */
 function renderLists(){
-  $('plList').innerHTML=playlists.length?playlists.map((p,i)=>'<div class="song"><span class="ph">📂</span><div style="flex:1;min-width:0"><div class="tt">'+esc(p.name)+'</div><div class="mt">'+p.ids.length+' gaane</div></div><span class="acts"><button class="icobtn" data-openpl="'+i+'">▶️ Khologe</button><button class="icobtn" data-delpl="'+i+'">🗑️</button></span></div>').join(''):'<div class="empty">Pehli playlist banao — upar naam likhkar "Banao" dabao.</div>';
-  $('plList').querySelectorAll('[data-openpl]').forEach(b=>b.onclick=()=>{const p=playlists[Number(b.dataset.openpl)];const items=p.ids.map(id=>lib.find(x=>x.id===id)).filter(Boolean);$('plDetail').innerHTML='<h2 class="sec">📂 '+esc(p.name)+'</h2>'+(items.length?items.map(it=>songRow(it)).join(''):'<div class="empty">Is playlist me abhi gaane nahi hain — gaane par ➕ dabakar jodo.</div>');bindRows($('plDetail'));});
-  $('plList').querySelectorAll('[data-delpl]').forEach(b=>b.onclick=()=>{if(confirm('Playlist delete kar dun?')){playlists.splice(Number(b.dataset.delpl),1);saveSets();renderLists();$('plDetail').innerHTML='';}});
+  $('plList').innerHTML=playlists.length?playlists.map((p,i)=>'<div class="song"><span class="ph">📂</span><div style="flex:1;min-width:0"><div class="tt">'+esc(p.name)+'</div><div class="mt">'+p.ids.length+' songs</div></div><span class="acts"><button class="icobtn" data-openpl="'+i+'">▶️ Open</button><button class="icobtn" data-delpl="'+i+'">🗑️</button></span></div>').join(''):'<div class="empty">Pehli playlist banao — upar naam likhkar "Banao" dabao.</div>';
+  $('plList').querySelectorAll('[data-openpl]').forEach(b=>b.onclick=()=>{const p=playlists[Number(b.dataset.openpl)];const items=p.ids.map(id=>lib.find(x=>x.id===id)).filter(Boolean);$('plDetail').innerHTML='<h2 class="sec">📂 '+esc(p.name)+'</h2>'+(items.length?items.map(it=>songRow(it)).join(''):'<div class="empty">No songs in this playlist yet — open a song\'s ⋯ menu to add it.</div>');bindRows($('plDetail'));});
+  $('plList').querySelectorAll('[data-delpl]').forEach(b=>b.onclick=()=>{if(confirm('Delete this playlist?')){playlists.splice(Number(b.dataset.delpl),1);saveSets();renderLists();$('plDetail').innerHTML='';}});
 }
-$('plAdd').onclick=()=>{const n=$('plName').value.trim();if(!n){alert('Playlist ka naam likho.');return;}playlists.push({id:'p'+Date.now(),name:n,ids:[]});saveSets();$('plName').value='';renderLists();};
+$('plAdd').onclick=()=>{const n=$('plName').value.trim();if(!n){alert('Enter a playlist name.');return;}playlists.push({id:'p'+Date.now(),name:n,ids:[]});saveSets();$('plName').value='';renderLists();};
 function addToPlaylistFlow(id){
-  if(!playlists.length){alert('Pehle Playlists page se ek playlist banao.');return;}
+  if(!playlists.length){alert('Create a playlist first, in the Playlists tab.');return;}
   const names=playlists.map((p,i)=>(i+1)+'. '+p.name).join('\n');
-  const ch=prompt('Kis playlist me jodun?\n'+names+'\nNumber likho:');
-  const idx=Number(ch)-1;if(playlists[idx]){if(!playlists[idx].ids.includes(id))playlists[idx].ids.push(id);saveSets();alert('Jud gaya ✅');}
+  const ch=prompt('Add to which playlist?\n'+names+'\nType the number:');
+  const idx=Number(ch)-1;if(playlists[idx]){if(!playlists[idx].ids.includes(id))playlists[idx].ids.push(id);saveSets();alert('Added ✅');}
 }
-/* ---------- MusicBrainz tag fixer (khula database) ---------- */
+/* ---------- Song action sheet ---------- */
+function openSheet(id){const it=lib.find(x=>x.id===id);if(!it)return;$('sheetTitle').textContent=it.title;const fav=favs.includes(id);
+  $('sheetActs').innerHTML='<button class="sheetItem" data-sa="play">▶️ Play</button><button class="sheetItem" data-sa="fav">'+(fav?'💔 Remove from Favourites':'❤️ Add to Favourites')+'</button><button class="sheetItem" data-sa="pl">➕ Add to Playlist</button><button class="sheetItem" data-sa="tag">🏷️ Song Info (artist / year)</button><button class="sheetItem" data-sa="del">🗑️ Remove from App</button>';
+  $('sheet').classList.remove('hidden');
+  $('sheetActs').querySelectorAll('[data-sa]').forEach(b=>b.onclick=async()=>{const a=b.dataset.sa;closeSheet();
+    if(a==='play')playFromList(id);else if(a==='fav')toggleFav(id);else if(a==='pl')addToPlaylistFlow(id);else if(a==='tag')tagFix(id);
+    else if(a==='del'&&confirm('Remove this file from the app? The original file on your phone stays untouched.')){await idbDel(id);favs=favs.filter(x=>x!==id);saveSets();loadLib();}});
+}
+function closeSheet(){$('sheet').classList.add('hidden');}
+$('sheet').addEventListener('click',e=>{if(e.target.id==='sheet')closeSheet();});
+/* ---------- MusicBrainz tag fixer ---------- */
 async function tagFix(id){
   const it=lib.find(x=>x.id===id);if(!it)return;
   const q=encodeURIComponent(it.title.replace(/[-_]/g,' '));
   try{
     const r=await fetch('https://musicbrainz.org/ws/2/recording/?query='+q+'&fmt=json&limit=1');
     const j=await r.json();const rec=(j.recordings||[])[0];
-    if(!rec){alert('Is naam se koi jaankari nahi mili.');return;}
+    if(!rec){alert('No match found for this title.');return;}
     const artist=(rec['artist-credit']||[]).map(a=>a.name).join(', ');
     const year=((rec['first-release-date']||'').match(/\d{4}/)||[''])[0];
-    if(confirm('Ye mila:\nGaana: '+rec.title+'\nSinger: '+(artist||'—')+'\nSaal: '+(year||'—')+'\n\nYe jaankari laga dun?')){
+    if(confirm('Found this:\nTitle: '+rec.title+'\nArtist: '+(artist||'—')+'\nYear: '+(year||'—')+'\n\nApply it?')){
       const full=await idbGet(id);full.title=rec.title;if(artist)full.artist=artist;if(year)full.year=year;await idbPut(full);loadLib();
     }
-  }catch(e){alert('Internet chahiye tag dhoondhne ke liye.');}
+  }catch(e){alert('Internet is needed to look up song info.');}
 }
 </script>
 <script>
@@ -463,14 +484,14 @@ const fmtT=s=>{if(!isFinite(s))return '0:00';s=Math.floor(s);return Math.floor(s
 function updSeek(){const m=media();if(!m||!m.duration)return;const pc=m.currentTime/m.duration*100;$('tCur').textContent=fmtT(m.currentTime);$('tDur').textContent=fmtT(m.duration);const sk=$('seek');sk.value=Math.round(pc);sk.style.background='linear-gradient(90deg,var(--acc) 0%,var(--acc2) '+pc+'%,rgba(140,150,180,.35) '+pc+'%)';}
 $('seek').addEventListener('input',e=>{const m=media();if(m&&m.duration)m.currentTime=e.target.value/100*m.duration;});
 $('mShuffle').onclick=()=>{shuffle=!shuffle;$('mShuffle').classList.toggle('on',shuffle);};
-$('mRepeat').onclick=()=>{repeat=(repeat+1)%3;$('mRepeat').textContent=['🔁 Repeat','🔂 Ek Hi Gaana','🔁 Repeat'][repeat];$('mRepeat').classList.toggle('on',repeat>0);};
-function updFavBtn(){if(!cur)return;const f=favs.includes(cur.id);$('mFav').textContent=f?'❤️ Pasand':'🤍 Pasand';$('mFav').classList.toggle('on',f);}
+$('mRepeat').onclick=()=>{repeat=(repeat+1)%3;$('mRepeat').textContent=['🔁 Repeat','🔂 Repeat One','🔁 Repeat'][repeat];$('mRepeat').classList.toggle('on',repeat>0);};
+function updFavBtn(){if(!cur)return;const f=favs.includes(cur.id);$('mFav').textContent=f?'❤️ Favourited':'🤍 Favourite';$('mFav').classList.toggle('on',f);}
 $('mFav').onclick=()=>{if(cur)toggleFav(cur.id);};
 /* ---------- Queue (aage kya bajega) ---------- */
 function renderQueue(){
   const box=$('queueBox');if(!box)return;
   if(!queue.length){box.innerHTML='';return;}
-  box.innerHTML='<h2 class="sec">⏭️ Aage Wale Gaane</h2>'+queue.map((q,i)=>'<div class="song'+(i===qi?' playing':'')+'" data-q="'+i+'"><span class="ph">'+(q.kind==='video'?'🎬':'🎵')+'</span><div style="flex:1;min-width:0"><div class="tt">'+esc(q.title)+'</div><div class="mt">'+esc(q.artist||'')+'</div></div>'+(i===qi?'<span class="eq"><span></span><span></span><span></span><span></span><span></span></span>':'')+'</div>').join('');
+  box.innerHTML='<h2 class="sec">⏭️ Up Next</h2>'+queue.map((q,i)=>'<div class="song'+(i===qi?' playing':'')+'" data-q="'+i+'"><span class="ph">'+(q.kind==='video'?'🎬':'🎵')+'</span><div style="flex:1;min-width:0"><div class="tt">'+esc(q.title)+'</div><div class="mt">'+esc(q.artist||'')+'</div></div>'+(i===qi?'<span class="eq"><span></span><span></span><span></span><span></span><span></span></span>':'')+'</div>').join('');
   box.querySelectorAll('[data-q]').forEach(el=>el.onclick=()=>{qi=Number(el.dataset.q);startItem(queue[qi]);});
 }
 /* ---------- Lyrics ---------- */
@@ -478,7 +499,7 @@ let lyrLines=[];
 function renderLyrics(){
   lyrLines=[];
   const box=$('lyricsBox');
-  if(!cur||!cur.lyrics){box.innerHTML='<div class="mut">Is gaane ki lyrics nahi mili.<br>Gaane ke saath usi naam ki .lrc file jodoge to yahan synchronized lyrics chalenge. Free Gaano ke kuch gaano ki lyrics wahi se mil jati hain.</div>';return;}
+  if(!cur||!cur.lyrics){box.innerHTML='<div class="mut">No lyrics for this song yet.<br>Add a matching .lrc file with the song and synced lyrics will play here. Some Free Music songs include lyrics from the catalog.</div>';return;}
   const lines=cur.lyrics.split(/\r?\n/).map(l=>{
     const mm=l.match(/\[(\d+):(\d+(?:\.\d+)?)\](.*)/);
     if(mm)return{t:Number(mm[1])*60+Number(mm[2]),x:mm[3].trim()};
@@ -508,12 +529,12 @@ function jamItem(t){return{jam:true,id:'jam'+t.id,title:t.name,artist:t.artist_n
 let freeSrc='jam';
 function paintFree(){
   const box=$('jamList');
-  box.innerHTML=jamResults.length?jamResults.map(it=>'<div class="song" data-jam="'+it.id+'">'+(it.image?'<img src="'+esc(it.image)+'" alt="">':'<span class="ph">🎵</span>')+'<div style="flex:1;min-width:0"><div class="tt">'+esc(it.title)+'</div><div class="mt">'+esc([it.artist,it.year].filter(Boolean).join(' · '))+'</div></div><span class="acts"><button class="icobtn" data-jamdl="'+it.id+'">⬇️ Library me</button></span></div>').join(''):'<div class="empty">Kuch nahi mila — doosra naam try karo.</div>';
+  box.innerHTML=jamResults.length?jamResults.map(it=>'<div class="song" data-jam="'+it.id+'">'+(it.image?'<img src="'+esc(it.image)+'" alt="">':'<span class="ph">🎵</span>')+'<div style="flex:1;min-width:0"><div class="tt">'+esc(it.title)+'</div><div class="mt">'+esc([it.artist,it.year].filter(Boolean).join(' · '))+'</div></div><span class="acts"><button class="icobtn" data-jamdl="'+it.id+'">⬇️ Save</button></span></div>').join(''):'<div class="empty">Nothing found — try another name.</div>';
   box.querySelectorAll('[data-jam]').forEach(el=>el.onclick=e=>{if(e.target.closest('button'))return;setQueue(jamResults,el.dataset.jam);});
-  box.querySelectorAll('[data-jamdl]').forEach(b=>b.onclick=async()=>{const it=jamResults.find(x=>x.id===b.dataset.jamdl);if(!it)return;b.textContent='⏳';try{const r=await fetch(it.audio);const blob=await r.blob();await idbPut({id:'f'+Date.now(),name:it.title+'.mp3',kind:'audio',blob,cover:null,title:it.title,artist:it.artist,year:it.year,album:it.album,lyrics:it.lyrics,source:it.src||'jamendo'});await loadLib();b.textContent='✅ Jud gaya';}catch(e){b.textContent='❌ Net chahiye';}});
+  box.querySelectorAll('[data-jamdl]').forEach(b=>b.onclick=async()=>{const it=jamResults.find(x=>x.id===b.dataset.jamdl);if(!it)return;b.textContent='⏳';try{const r=await fetch(it.audio);const blob=await r.blob();await idbPut({id:'f'+Date.now(),name:it.title+'.mp3',kind:'audio',blob,cover:null,title:it.title,artist:it.artist,year:it.year,album:it.album,lyrics:it.lyrics,source:it.src||'jamendo'});await loadLib();b.textContent='✅ Saved';}catch(e){b.textContent='❌ Needs internet';}});
 }
 async function iaLoad(q){
-  const box=$('jamList');box.innerHTML='<div class="empty">Internet Archive me khoj raha hoon…</div>';
+  const box=$('jamList');box.innerHTML='<div class="empty">Searching Internet Archive…</div>';
   try{
     const query=q?('(title:('+q+') OR creator:('+q+') OR subject:('+q+')) AND mediatype:audio'):('mediatype:audio AND collection:opensource_audio');
     const r=await fetch('https://archive.org/advancedsearch.php?q='+encodeURIComponent(query)+'&fl[]=identifier,title,creator,year&rows=20&output=json');
@@ -529,19 +550,19 @@ async function iaLoad(q){
       }catch(e){}
     }
     jamResults=items;paintFree();
-  }catch(e){box.innerHTML='<div class="empty">Internet chahiye Internet Archive ke liye.</div>';}
+  }catch(e){box.innerHTML='<div class="empty">Internet is needed for Internet Archive.</div>';}
 }
 function freeLoad(q){if(freeSrc==='ia')iaLoad(q);else jamLoad(q);}
 $('srcJam').onclick=()=>{freeSrc='jam';$('srcJam').classList.add('sel');$('srcIA').classList.remove('sel');jamResults=[];freeLoad($('jamSearch').value.trim());};
 $('srcIA').onclick=()=>{freeSrc='ia';$('srcIA').classList.add('sel');$('srcJam').classList.remove('sel');jamResults=[];freeLoad($('jamSearch').value.trim());};
 async function jamLoad(q){
-  const box=$('jamList');box.innerHTML='<div class="empty">Khoj raha hoon…</div>';
+  const box=$('jamList');box.innerHTML='<div class="empty">Searching…</div>';
   try{
     const res=await jamFetch(q?('search='+encodeURIComponent(q)):('order=popularity_total'));
     jamResults=res.map(jamItem);
     paintFree();
   }catch(e){
-    box.innerHTML='<div class="empty">'+(e.message==='setup'?'Free Gaano ka setup abhi ho raha hai — thodi der me chalega.':'Internet chahiye Free Gaano ke liye.')+'</div>';
+    box.innerHTML='<div class="empty">'+(e.message==='setup'?'Free Music is still being set up — try again shortly.':'Internet is needed for Free Music.')+'</div>';
   }
 }
 $('jamGo').onclick=()=>freeLoad($('jamSearch').value.trim());
@@ -556,7 +577,7 @@ function wakeUI(state,text){
   $('wakeTxt').textContent=text;
 }
 function startWake(){
-  if(!SR){wakeUI('off','Hey Dhun: is browser me nahi');return;}
+  if(!SR){wakeUI('off','Hey Dhun: not supported here');return;}
   if((!settings.wake&&!micForce)||micBlocked){wakeUI('off','Hey Dhun: OFF');stopRec();return;}
   recWanted=true;
   if(rec){try{rec.start();}catch(e){}return;}
@@ -572,41 +593,41 @@ function startWake(){
       if(cmd.length>=2){runCommand(cmd);sleepWake();}
     }
   };
-  rec.onerror=e=>{if(e.error==='not-allowed'){micBlocked=true;wakeUI('off','Mic ki permission chahiye');recWanted=false;}if(e.error==='language-not-supported'&&rec.lang==='hi-IN'){rec.lang='en-IN';}};
+  rec.onerror=e=>{if(e.error==='not-allowed'){micBlocked=true;wakeUI('off','Microphone permission needed');recWanted=false;}if(e.error==='language-not-supported'&&rec.lang==='hi-IN'){rec.lang='en-IN';}};
   rec.onend=()=>{if(recWanted&&settings.wake&&!document.hidden&&!micBlocked)setTimeout(()=>{try{rec&&rec.start();}catch(e){}},500);};
   try{rec.start();}catch(e){}
-  wakeUI('on','Hey Dhun: sun raha hoon');
+  wakeUI('on','Hey Dhun: listening');
 }
 function stopRec(){recWanted=false;if(rec){try{rec.stop();}catch(e){}}}
 function setListening(on){$('voiceGlow').classList.toggle('on',!!on);}
-function wakeUp(){awake=true;setListening(true);beep(880);wakeUI('awake','Bolo, sun raha hoon…');clearTimeout(awakeTimer);awakeTimer=setTimeout(sleepWake,8000);}
+function wakeUp(){awake=true;setListening(true);beep(880);wakeUI('awake','Listening — speak now…');clearTimeout(awakeTimer);awakeTimer=setTimeout(sleepWake,8000);}
 function sleepWake(){awake=false;setListening(false);if(micForce&&!settings.wake){micForce=false;stopRec();wakeUI('off','Hey Dhun: OFF');return;}wakeUI('on','Hey Dhun: sun raha hoon');}
 async function runCommand(raw){
   const t=raw.toLowerCase().trim();if(!t)return;
-  if(/agla|agle|next/.test(t)){next();say('Agla gaana');return;}
-  if(/pichl|pichle|previous|peeche|pehle wala/.test(t)){prev();say('Pichla gaana');return;}
-  if(/rok|pause|band karo|chup/.test(t)){media().pause();say('Rok diya');return;}
+  if(/agla|agle|next/.test(t)){next();say('Next track');return;}
+  if(/pichl|pichle|previous|peeche|pehle wala/.test(t)){prev();say('Previous track');return;}
+  if(/rok|pause|band karo|chup/.test(t)){media().pause();say('Paused');return;}
   const q=t.replace(/chala+o?|chalao|play|bajao|baja|suna+o?|lagao|laga|gaana|gaane|song|karo|krdo/g,' ').replace(/\s+/g,' ').trim();
   if(q){
     const hit=lib.find(x=>(x.title+' '+(x.artist||'')).toLowerCase().includes(q));
-    if(hit){playFromList(hit.id);say(hit.title+' chala raha hoon');return;}
-    try{const res=await jamFetch('search='+encodeURIComponent(q));if(res&&res.length){const items=res.map(jamItem);setQueue(items,items[0].id);say(items[0].title+' chala raha hoon');return;}}catch(e){}
-    say('Ye gaana nahi mila');return;
+    if(hit){playFromList(hit.id);say('Playing '+hit.title);return;}
+    try{const res=await jamFetch('search='+encodeURIComponent(q));if(res&&res.length){const items=res.map(jamItem);setQueue(items,items[0].id);say('Playing '+items[0].title);return;}}catch(e){}
+    say('Could not find that song');return;
   }
-  if(/chala|play|baja/.test(t)){media().play();say('Chala diya');}
+  if(/chala|play|baja/.test(t)){media().play();say('Playing');}
 }
 $('micBtn').onclick=()=>{
-  if(!SR){alert('Is browser me voice search nahi chalta — Chrome me kholo.');return;}
+  if(!SR){alert('Voice search is not supported in this browser — open in Chrome.');return;}
   const r=new SR();r.lang='hi-IN';r.interimResults=false;
   r.onresult=e=>{const t=e.results[0][0].transcript;$('libSearch').value=t;renderLib();};
-  r.onerror=()=>alert('Awaaz samajh nahi aayi — dobara try karo.');
+  r.onerror=()=>alert('Did not catch that — try again.');
   r.start();
 };
-$('micFab').onclick=()=>{if(!SR){alert('Is browser me voice assistant nahi chalta — Chrome me kholo.');return;}micBlocked=false;micForce=true;startWake();wakeUp();say('Bolo, sun raha hoon');};
+$('micFab').onclick=()=>{if(!SR){alert('Voice assistant is not supported in this browser — open in Chrome.');return;}micBlocked=false;micForce=true;startWake();wakeUp();say('Listening');};
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopRec();else if(settings.wake)startWake();});
 /* ================= CUSTOMIZATION (saare options kaam karte hain) ================= */
 (function buildViz(){let h='';for(let i=0;i<40;i++)h+='<span style="animation-delay:'+(i*0.07)+'s"></span>';$('viz').innerHTML=h;})();
-const ACCENTS={violet:['#7c3aed','#2563eb'],pink:['#ec4899','#f43f5e'],green:['#16a34a','#0d9488'],orange:['#ea580c','#f59e0b'],sky:['#0284c7','#06b6d4'],red:['#dc2626','#991b1b']};
+const ACCENTS={violet:['#ff3b30','#ff9500'],pink:['#ff5e8a','#c9184a'],green:['#22c55e','#0d9488'],orange:['#f59e0b','#d97706'],sky:['#38bdf8','#2563eb'],red:['#a78bfa','#6d28d9']};
 function applySettings(){
   const root=document.documentElement;
   const dark=settings.theme==='dark'||(settings.theme==='system'&&!(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches));
@@ -654,16 +675,16 @@ document.addEventListener('click',e=>{if(e.target.closest('nav.bottom button,.bt
 function syncToggles(){$('tglWake').classList.toggle('on',!!settings.wake);$('tglSfx').classList.toggle('on',!!settings.sfx);applySettings();}
 $('tglWake').onclick=()=>{settings.wake=!settings.wake;saveSets();syncToggles();micBlocked=false;if(settings.wake)startWake();else{stopRec();wakeUI('off','Hey Dhun: OFF');}};
 $('tglSfx').onclick=()=>{settings.sfx=!settings.sfx;saveSets();syncToggles();};
-$('saveNameBtn').onclick=()=>{const v=$('setName').value.trim();if(v&&profile){profile.name=v;LS.set('dh_profile',profile);$('helloName').textContent=v;alert('Naam save ho gaya ✅');}};
-$('wipeBtn').onclick=async()=>{if(!confirm('Pakka? Saare gaane, playlists aur settings is app se delete ho jayenge.'))return;['dh_profile','dh_settings','dh_favs','dh_playlists','dh_recents'].forEach(k=>localStorage.removeItem(k));indexedDB.deleteDatabase('dhun-db');location.reload();};
+$('saveNameBtn').onclick=()=>{const v=$('setName').value.trim();if(v&&profile){profile.name=v;LS.set('dh_profile',profile);$('helloName').textContent=v;alert('Name saved ✅');}};
+$('wipeBtn').onclick=async()=>{if(!confirm('Are you sure? All songs, playlists and settings in this app will be erased.'))return;['dh_profile','dh_settings','dh_favs','dh_playlists','dh_recents'].forEach(k=>localStorage.removeItem(k));indexedDB.deleteDatabase('dhun-db');location.reload();};
 function enterApp(){
   $('gate').classList.add('hidden');$('appView').classList.remove('hidden');$('bottomNav').classList.remove('hidden');
-  $('helloName').textContent=profile?profile.name:'Dost';
+  $('helloName').textContent=profile?profile.name:'Friend';
   if(profile)$('setName').value=profile.name;
   syncToggles();loadLib();renderLists();
   if(settings.wake)startWake();else wakeUI('off','Hey Dhun: OFF');
 }
-$('gateBtn').onclick=()=>{const n=$('gateName').value.trim();if(!n){alert('Pehle apna naam likho 🙂');return;}profile={name:n};LS.set('dh_profile',profile);enterApp();};
+$('gateBtn').onclick=()=>{const n=$('gateName').value.trim();if(!n){alert('Please enter your name 🙂');return;}profile={name:n};LS.set('dh_profile',profile);enterApp();};
 /* live shell: APK khulte hi latest web version */
 if(window.Capacitor&&navigator.onLine&&location.hostname!=='beingdaksh.github.io'){setTimeout(()=>{try{location.replace('https://beingdaksh.github.io/dhun-player/');}catch(e){}},900);}
 if(profile)enterApp();
