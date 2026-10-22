@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Dhun — Music Player</title>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://api.jamendo.com https://*.jamendo.com https://musicbrainz.org https://archive.org https://*.archive.org; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; media-src 'self' blob: https:; object-src 'none'; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://api.jamendo.com https://*.jamendo.com https://musicbrainz.org https://archive.org https://*.archive.org https://api.audius.co; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; media-src 'self' blob: https:; object-src 'none'; base-uri 'self'">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <meta name="theme-color" content="#0b1220">
@@ -170,6 +170,27 @@ body{background:radial-gradient(120% 55% at 50% -8%,rgba(255,45,60,.20),transpar
 .modeRow button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
 #voiceGlow::after{content:'';position:absolute;left:50%;top:40%;width:150px;height:150px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 32%,#ffa25e,#f43f3f 48%,#7a0a1e 100%);box-shadow:0 0 90px rgba(255,45,70,.8),inset 0 -18px 34px rgba(0,0,0,.35);animation:orbPulse 1.5s ease-in-out infinite}
 @keyframes orbPulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.08)}}
+
+body{background:radial-gradient(60% 40% at 12% -4%,rgba(255,59,48,.22),transparent 60%),radial-gradient(50% 36% at 88% 6%,rgba(255,149,0,.14),transparent 60%),radial-gradient(70% 50% at 50% 108%,rgba(124,58,237,.13),transparent 60%),var(--bg)}
+.hero{background:radial-gradient(120% 140% at 8% 0%,rgba(255,170,60,.50),transparent 50%),radial-gradient(120% 160% at 95% 20%,rgba(255,45,85,.55),transparent 55%),radial-gradient(150% 150% at 50% 115%,rgba(90,0,30,.65),transparent 60%),linear-gradient(135deg,#3d0512,#8f0f26 55%,#e83a14)}
+.song,.box,.tile,.glassPanel,.miniBar{box-shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.05)}
+.tile{box-shadow:0 14px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.25)}
+body:not(.noanim) .song{transition:transform .16s ease,box-shadow .16s ease}
+.song:active{transform:scale(.985)}
+.ic{display:inline-flex;align-items:center;justify-content:center}
+.icsvg{width:20px;height:20px;flex:none}
+.icsvg.fillp *{fill:currentColor}
+nav.tab .icsvg{width:22px;height:22px}
+.controls .icsvg{width:29px;height:29px}
+#cPlay .icsvg{width:34px;height:34px}
+.modeRow .icsvg{width:15px;height:15px;vertical-align:-2px;margin-right:4px}
+.acts .icsvg,.icobtn .icsvg{width:19px;height:19px}
+.ph .icsvg{width:20px;height:20px}
+.sheetItem .icsvg{width:19px;height:19px;vertical-align:-4px;margin-right:9px}
+.tile .icsvg{width:13px;height:13px;vertical-align:-2px;margin-right:4px}
+.tabs .icsvg{width:15px;height:15px;vertical-align:-2px;margin-right:5px}
+.icobtn.loved .icsvg{fill:#ff3b30;color:#ff3b30}
+.icobtn.loved .icsvg *{fill:#ff3b30}
 </style>
 </head>
 <body>
@@ -191,13 +212,13 @@ body{background:radial-gradient(120% 55% at 50% -8%,rgba(255,45,60,.20),transpar
   <header class="top">
     <span class="ttl">🎵 Dhun</span>
     <span class="sp"></span>
-    <button class="icobtn" id="micFab" title="Voice assistant">🎤</button>
+    <button class="icobtn" id="micFab" title="Voice assistant"><span class="ic" data-ic="mic"></span></button>
     <span class="pill" id="wakePill"><span class="dot" id="wakeDot"></span><span id="wakeTxt">Hey Dhun: OFF</span></span>
   </header>
 
   <section id="view-home" class="view">
     <div class="hero"><h2>Hey <span id="helloName">Friend</span> 👋</h2><p>What are you looking for today?</p><div class="herochips"><button class="herochip" data-hq="hindi songs">🇮🇳 Hindi</button><button class="herochip" data-hq="punjabi">🥁 Punjabi</button><button class="herochip" data-hq="tamil">🎶 Tamil</button><button class="herochip" data-hq="telugu">🎶 Telugu</button><button class="herochip" data-hq="malayalam">🎶 Malayalam</button><button class="herochip" data-hq="english pop">🌍 English</button></div></div>
-    <div class="tiles"><div class="tile fav" id="tileFav"><small>❤️ FAVOURITES</small><b id="tileFavN">0 songs</b></div><div class="tile free" id="tileFree"><small>🌐 FREE MUSIC — JAMENDO + ARCHIVE</small><b>Browse →</b></div></div>
+    <div class="tiles"><div class="tile fav" id="tileFav"><small><span class="ic" data-ic="heart"></span>FAVOURITES</small><b id="tileFavN">0 songs</b></div><div class="tile free" id="tileFree"><small><span class="ic" data-ic="globe"></span>FREE MUSIC — JAMENDO · ARCHIVE · AUDIUS</small><b>Browse →</b></div></div>
     <div class="box"><h3>🎧 Add Your Music</h3><p class="mut">Pick MP3/MP4 files from your phone — they are saved inside the app and play offline. Add a matching .lrc file and lyrics come along too.</p><label class="btn" style="display:block;text-align:center;cursor:pointer">➕ Add Songs / Videos<input type="file" id="filePick" accept="audio/*,video/*,.lrc" multiple class="hidden"></label></div>
     <h2 class="sec">Recently Played</h2>
     <div id="recentList"></div>
@@ -208,7 +229,7 @@ body{background:radial-gradient(120% 55% at 50% -8%,rgba(255,45,60,.20),transpar
   </section>
 
   <section id="view-library" class="view hidden">
-    <div class="searchbar"><input id="libSearch" type="text" placeholder="Search title, artist, year…"><button class="icobtn" id="micBtn" title="Voice search">🎤</button></div>
+    <div class="searchbar"><input id="libSearch" type="text" placeholder="Search title, artist, year…"><button class="icobtn" id="micBtn" title="Voice search"><span class="ic" data-ic="mic"></span></button></div>
     <div class="tabs"><button id="tabSongs" class="sel">🎵 Songs</button><button id="tabVideos">🎬 Videos</button></div>
     <div id="libList"></div>
   </section>
@@ -216,7 +237,7 @@ body{background:radial-gradient(120% 55% at 50% -8%,rgba(255,45,60,.20),transpar
   <section id="view-free" class="view hidden">
     <h2 class="sec">🆓 Free Music</h2>
     <p class="mut" style="margin:0 0 8px">Open-licensed songs — stream them, or tap ⬇️ Save to keep them in your library for offline listening.</p>
-    <div class="tabs"><button id="srcJam" class="sel">🎧 Jamendo</button><button id="srcIA">🏛️ Internet Archive</button></div>
+    <div class="tabs"><button id="srcJam" class="sel"><span class="ic" data-ic="disc-3"></span>Jamendo</button><button id="srcIA"><span class="ic" data-ic="library"></span>Internet Archive</button><button id="srcAU"><span class="ic" data-ic="headphones"></span>Audius</button></div>
     <div class="optrow" style="margin:4px 0 2px"><button class="optbtn" data-chip="hindi">🇮🇳 Hindi</button><button class="optbtn" data-chip="rap">🎤 Rap</button><button class="optbtn" data-chip="folk">🪕 Folk</button><button class="optbtn" data-chip="english">🌍 English</button><button class="optbtn" data-chip="punjabi">🥁 Punjabi</button><button class="optbtn" data-chip="lofi">🌙 Lo-Fi</button></div>
     <div class="searchbar"><input id="jamSearch" type="text" placeholder="Search free songs…"><button class="btn small" id="jamGo">Search</button></div>
     <div id="jamList"><div class="empty">Search above — or wait a moment, popular free songs are loading…</div></div>
@@ -234,15 +255,15 @@ body{background:radial-gradient(120% 55% at 50% -8%,rgba(255,45,60,.20),transpar
     <div class="box">
       <div class="grp">Appearance</div>
       <div class="swrow"><span>🌗 Theme<br><span class="mut">Dark, Light, or match your phone</span></span><span class="optrow"><button class="optbtn" data-theme="dark">🌙 Dark</button><button class="optbtn" data-theme="light">☀️ Light</button><button class="optbtn" data-theme="system">📱 System</button></span></div>
-      <div class="swrow"><span>🎨 Accent Colour<br><span class="mut">The whole app follows this colour</span></span><span class="optrow"><button class="swatch" data-acc="violet" style="background:linear-gradient(135deg,#ff3b30,#ff9500)"></button><button class="swatch" data-acc="pink" style="background:linear-gradient(135deg,#ff5e8a,#c9184a)"></button><button class="swatch" data-acc="green" style="background:linear-gradient(135deg,#22c55e,#0d9488)"></button><button class="swatch" data-acc="orange" style="background:linear-gradient(135deg,#f59e0b,#d97706)"></button><button class="swatch" data-acc="sky" style="background:linear-gradient(135deg,#38bdf8,#2563eb)"></button><button class="swatch" data-acc="red" style="background:linear-gradient(135deg,#a78bfa,#6d28d9)"></button></span></div>
-      <div class="swrow"><span>📐 Layout Density<br><span class="mut">Comfortable or compact list spacing</span></span><span class="optrow"><button class="optbtn" data-density="cozy">Comfortable</button><button class="optbtn" data-density="compact">Compact</button></span></div>
+      <div class="swrow"><span><span class="ic" data-ic="palette"></span> Accent Colour<br><span class="mut">The whole app follows this colour</span></span><span class="optrow"><button class="swatch" data-acc="violet" style="background:linear-gradient(135deg,#ff3b30,#ff9500)"></button><button class="swatch" data-acc="pink" style="background:linear-gradient(135deg,#ff5e8a,#c9184a)"></button><button class="swatch" data-acc="green" style="background:linear-gradient(135deg,#22c55e,#0d9488)"></button><button class="swatch" data-acc="orange" style="background:linear-gradient(135deg,#f59e0b,#d97706)"></button><button class="swatch" data-acc="sky" style="background:linear-gradient(135deg,#38bdf8,#2563eb)"></button><button class="swatch" data-acc="red" style="background:linear-gradient(135deg,#a78bfa,#6d28d9)"></button></span></div>
+      <div class="swrow"><span><span class="ic" data-ic="layout-grid"></span> Layout Density<br><span class="mut">Comfortable or compact list spacing</span></span><span class="optrow"><button class="optbtn" data-density="cozy">Comfortable</button><button class="optbtn" data-density="compact">Compact</button></span></div>
     </div>
     <div class="box">
     <div class="grp">Player</div>
       <div class="swrow"><span>🖼️ Player Background<br><span class="mut">What shows behind the song that is playing</span></span><span class="optrow"><button class="optbtn" data-plbg="blur">🌫️ Blur</button><button class="optbtn" data-plbg="grad">🌈 Gradient</button><button class="optbtn" data-plbg="solid">⬛ Plain</button></span></div>
-      <div class="swrow"><span>🔀 Crossfade<br><span class="mut">Songs melt into each other (3 seconds)</span></span><button class="tgl" id="tglXfade"></button></div>
-      <div class="swrow"><span>🙈 Hide Player Artwork<br><span class="mut">Minimal player without the big cover</span></span><button class="tgl" id="tglArt"></button></div>
-      <div class="swrow"><span>📊 Visualizer<br><span class="mut">Animated bars under the slider while music plays</span></span><button class="tgl" id="tglViz"></button></div>
+      <div class="swrow"><span><span class="ic" data-ic="blend"></span> Crossfade<br><span class="mut">Songs melt into each other (3 seconds)</span></span><button class="tgl" id="tglXfade"></button></div>
+      <div class="swrow"><span><span class="ic" data-ic="eye-off"></span> Hide Player Artwork<br><span class="mut">Minimal player without the big cover</span></span><button class="tgl" id="tglArt"></button></div>
+      <div class="swrow"><span><span class="ic" data-ic="audio-lines"></span> Visualizer<br><span class="mut">Animated bars under the slider while music plays</span></span><button class="tgl" id="tglViz"></button></div>
       <div class="swrow"><span>✨ Animations<br><span class="mut">All liquid-glass motion, on or off</span></span><button class="tgl" id="tglAnim"></button></div>
       <div class="grp">Voice & Sound</div>
       <div class="swrow"><span>🎤 Wake with "Hey Dhun"<br><span class="mut">While the app is open, say "Hey Dhun", then your command — hands-free</span></span><button class="tgl" id="tglWake"></button></div>
@@ -250,17 +271,17 @@ body{background:radial-gradient(120% 55% at 50% -8%,rgba(255,45,60,.20),transpar
       <div class="grp">Profile</div>
       <div class="swrow"><span>👤 Your Name</span><span style="display:flex;gap:6px"><input id="setName" type="text" style="padding:8px;border-radius:9px;border:1px solid var(--border);background:rgba(0,0,0,.18);color:var(--text)"><button class="btn small" id="saveNameBtn">Save</button></span></div>
     </div>
-    <div class="box"><h3>ℹ️ About Dhun</h3><p class="mut">Dhun — your personal MP3/MP4 player with a legal free-music library. No ads, ₹0. Your data stays on this phone.</p>
+    <div class="box"><h3>ℹ️ About Dhun</h3><p class="mut">Dhun — your personal MP3/MP4 player with a legal free-music library. No ads, ₹0. Your data stays on this phone.</p><p class="mut">Free streams: Jamendo, Internet Archive and Audius (independent artists, via their official free APIs). Interface icons: Lucide (open source).</p>
     <button class="btn" style="background:var(--red)" id="wipeBtn">🗑️ Erase All Data</button></div>
   </section>
 </div>
 
 <!-- mini player -->
 <div id="mini" class="hidden">
-  <span class="ph">🎵</span>
+  <span class="ph"><span class="ic" data-ic="music"></span></span>
   <div style="flex:1;min-width:0"><div class="tt" id="miniT">—</div><div class="mt" id="miniM">—</div></div>
   <span class="eq"><span></span><span></span><span></span><span></span><span></span></span>
-  <button class="icobtn" id="miniPlay">▶️</button>
+  <button class="icobtn" id="miniPlay"><span class="ic" data-ic="play"></span></button>
   <button class="icobtn" id="miniNext">⏭️</button>
 </div>
 
@@ -268,7 +289,7 @@ body{background:radial-gradient(120% 55% at 50% -8%,rgba(255,45,60,.20),transpar
 <div id="player">
   <div id="plBg"></div>
   <div class="inner">
-  <button class="icobtn" id="plClose">⌄ Close</button>
+  <button class="icobtn" id="plClose"><span class="ic" data-ic="chevron-down"></span> Close</button>
   <video id="vi" class="hidden" playsinline></video>
   <div class="coverWrap"><img id="plCover" class="cover" alt=""></div>
   <div class="pt" id="plTitle">—</div>
@@ -277,17 +298,17 @@ body{background:radial-gradient(120% 55% at 50% -8%,rgba(255,45,60,.20),transpar
   <div class="seek"><span id="tCur">0:00</span><input type="range" id="seek" min="0" max="100" value="0"><span id="tDur">0:00</span></div>
   <div class="viz" id="viz"></div>
   <div class="controls">
-    <button id="cPrev">⏮️</button>
-    <button class="big" id="cPlay">▶️</button>
-    <button id="cNext">⏭️</button>
+    <button id="cPrev"><span class="ic" data-ic="skip-back"></span></button>
+    <button class="big" id="cPlay"><span class="ic" data-ic="play"></span></button>
+    <button id="cNext"><span class="ic" data-ic="skip-forward"></span></button>
   </div>
   <div class="modeRow">
-    <button id="mShuffle">🔀 Shuffle</button>
-    <button id="mRepeat">🔁 Repeat</button>
-    <button id="mSleep">⏰ Sleep: Off</button>
-    <button id="mSpeed">⏩ 1x</button>
-    <button id="mFav">🤍 Favourite</button>
-    <button id="mLyrics">📜 Lyrics</button>
+    <button id="mShuffle"><span class="ic" data-ic="shuffle"></span>Shuffle</button>
+    <button id="mRepeat"><span class="ic" data-ic="repeat"></span>Repeat</button>
+    <button id="mSleep"><span class="ic" data-ic="timer"></span>Sleep: Off</button>
+    <button id="mSpeed"><span class="ic" data-ic="gauge"></span>1x</button>
+    <button id="mFav"><span class="ic" data-ic="heart"></span>Favourite</button>
+    <button id="mLyrics"><span class="ic" data-ic="scroll-text"></span>Lyrics</button>
   </div>
   <div id="lyricsBox" class="hidden"><div class="mut">No lyrics for this song yet.<br>Add a matching .lrc file with the song and synced lyrics will play here.</div></div>
   </div>
@@ -297,16 +318,19 @@ body{background:radial-gradient(120% 55% at 50% -8%,rgba(255,45,60,.20),transpar
 
 <div id="sheet" class="hidden"><div class="sheetCard"><div id="sheetTitle">Song</div><div id="sheetActs"></div></div></div>
 <nav class="bottom hidden" id="bottomNav">
-  <button data-nav="home" class="act"><span class="ic">🏠</span>Home</button>
-  <button data-nav="library"><span class="ic">🎶</span>Library</button>
-  <button data-nav="free"><span class="ic">🆓</span>Free Music</button>
-  <button data-nav="lists"><span class="ic">📂</span>Playlists</button>
-  <button data-nav="settings"><span class="ic">⚙️</span>Settings</button>
+  <button data-nav="home" class="act"><span class="ic" data-ic="home"></span>Home</button>
+  <button data-nav="library"><span class="ic" data-ic="library"></span>Library</button>
+  <button data-nav="free"><span class="ic" data-ic="globe"></span>Free Music</button>
+  <button data-nav="lists"><span class="ic" data-ic="list-music"></span>Playlists</button>
+  <button data-nav="settings"><span class="ic" data-ic="settings"></span>Settings</button>
 </nav>
 <audio id="au" preload="metadata"></audio>
 <script>
 'use strict';
 const $=id=>document.getElementById(id);
+const ICON_PATHS={"play": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z\" />", "pause": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <rect x=\"14\" y=\"3\" width=\"5\" height=\"18\" rx=\"1\" />\n  <rect x=\"5\" y=\"3\" width=\"5\" height=\"18\" rx=\"1\" />", "skip-back": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z\" />\n  <path d=\"M3 20V4\" />", "skip-forward": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M21 4v16\" />\n  <path d=\"M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z\" />", "shuffle": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"m18 14 4 4-4 4\" />\n  <path d=\"m18 2 4 4-4 4\" />\n  <path d=\"M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22\" />\n  <path d=\"M2 6h1.972a4 4 0 0 1 3.6 2.2\" />\n  <path d=\"M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45\" />", "repeat": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"m17 2 4 4-4 4\" />\n  <path d=\"M3 11v-1a4 4 0 0 1 4-4h14\" />\n  <path d=\"m7 22-4-4 4-4\" />\n  <path d=\"M21 13v1a4 4 0 0 1-4 4H3\" />", "repeat-1": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"m17 2 4 4-4 4\" />\n  <path d=\"M3 11v-1a4 4 0 0 1 4-4h14\" />\n  <path d=\"m7 22-4-4 4-4\" />\n  <path d=\"M21 13v1a4 4 0 0 1-4 4H3\" />\n  <path d=\"M11 10h1v4\" />", "heart": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5\" />", "ellipsis-vertical": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <circle cx=\"12\" cy=\"12\" r=\"1\" />\n  <circle cx=\"12\" cy=\"5\" r=\"1\" />\n  <circle cx=\"12\" cy=\"19\" r=\"1\" />", "mic": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M12 19v3\" />\n  <path d=\"M19 10v2a7 7 0 0 1-14 0v-2\" />\n  <rect x=\"9\" y=\"2\" width=\"6\" height=\"13\" rx=\"3\" />", "home": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\" />\n  <path d=\"M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\" />", "library": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"m16 6 4 14\" />\n  <path d=\"M12 6v14\" />\n  <path d=\"M8 8v12\" />\n  <path d=\"M4 4v16\" />", "list-music": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M16 5H3\" />\n  <path d=\"M11 12H3\" />\n  <path d=\"M11 19H3\" />\n  <path d=\"M21 16V5\" />\n  <circle cx=\"18\" cy=\"16\" r=\"3\" />", "scroll-text": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M15 12h-5\" />\n  <path d=\"M15 8h-5\" />\n  <path d=\"M19 17V5a2 2 0 0 0-2-2H4\" />\n  <path d=\"M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3\" />", "sliders-horizontal": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M10 5H3\" />\n  <path d=\"M12 19H3\" />\n  <path d=\"M14 3v4\" />\n  <path d=\"M16 17v4\" />\n  <path d=\"M21 12h-9\" />\n  <path d=\"M21 19h-5\" />\n  <path d=\"M21 5h-7\" />\n  <path d=\"M8 10v4\" />\n  <path d=\"M8 12H3\" />", "download": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M12 15V3\" />\n  <path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\" />\n  <path d=\"m7 10 5 5 5-5\" />", "plus": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M5 12h14\" />\n  <path d=\"M12 5v14\" />", "x": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M18 6 6 18\" />\n  <path d=\"m6 6 12 12\" />", "chevron-down": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"m6 9 6 6 6-6\" />", "timer": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <line x1=\"10\" x2=\"14\" y1=\"2\" y2=\"2\" />\n  <line x1=\"12\" x2=\"15\" y1=\"14\" y2=\"11\" />\n  <circle cx=\"12\" cy=\"14\" r=\"8\" />", "gauge": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"m12 14 4-4\" />\n  <path d=\"M3.34 19a10 10 0 1 1 17.32 0\" />", "music": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M21 16V3a1 1 0 0 0-1.28-.96l-10 2.917a1 1 0 0 0-.72.96V19\" />\n  <circle cx=\"18\" cy=\"16\" r=\"3\" />\n  <circle cx=\"6\" cy=\"19\" r=\"3\" />", "video": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5\" />\n  <rect x=\"2\" y=\"6\" width=\"14\" height=\"12\" rx=\"2\" />", "globe": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <circle cx=\"12\" cy=\"12\" r=\"10\" />\n  <path d=\"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\" />\n  <path d=\"M2 12h20\" />", "disc-3": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <circle cx=\"12\" cy=\"12\" r=\"10\" />\n  <path d=\"M6 12c0-1.7.7-3.2 1.8-4.2\" />\n  <circle cx=\"12\" cy=\"12\" r=\"2\" />\n  <path d=\"M18 12c0 1.7-.7 3.2-1.8 4.2\" />", "flame": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4\" />", "tag": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z\" />\n  <circle cx=\"7.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\" />", "trash-2": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M10 11v6\" />\n  <path d=\"M14 11v6\" />\n  <path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6\" />\n  <path d=\"M3 6h18\" />\n  <path d=\"M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\" />", "search": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"m21 21-4.34-4.34\" />\n  <circle cx=\"11\" cy=\"11\" r=\"8\" />", "info": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <circle cx=\"12\" cy=\"12\" r=\"10\" />\n  <path d=\"M12 16v-4\" />\n  <path d=\"M12 8h.01\" />", "sparkles": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\" />\n  <path d=\"M20 2v4\" />\n  <path d=\"M22 4h-4\" />\n  <circle cx=\"4\" cy=\"20\" r=\"2\" />", "audio-lines": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M2 10v3\" />\n  <path d=\"M6 6v11\" />\n  <path d=\"M10 3v18\" />\n  <path d=\"M14 8v7\" />\n  <path d=\"M18 5v13\" />\n  <path d=\"M22 10v3\" />", "moon": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\" />", "palette": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z\" />\n  <circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\" />\n  <circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\" />\n  <circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\" />\n  <circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\" />", "layout-grid": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <rect width=\"7\" height=\"7\" x=\"3\" y=\"3\" rx=\"1\" />\n  <rect width=\"7\" height=\"7\" x=\"14\" y=\"3\" rx=\"1\" />\n  <rect width=\"7\" height=\"7\" x=\"14\" y=\"14\" rx=\"1\" />\n  <rect width=\"7\" height=\"7\" x=\"3\" y=\"14\" rx=\"1\" />", "image": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" ry=\"2\" />\n  <circle cx=\"9\" cy=\"9\" r=\"2\" />\n  <path d=\"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21\" />", "blend": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <circle cx=\"15\" cy=\"9\" r=\"7\" />\n  <circle cx=\"9\" cy=\"15\" r=\"7\" />", "eye-off": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49\" />\n  <path d=\"M14.084 14.158a3 3 0 0 1-4.242-4.242\" />\n  <path d=\"M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143\" />\n  <path d=\"m2 2 20 20\" />", "volume-2": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z\" />\n  <path d=\"M16 9a5 5 0 0 1 0 6\" />\n  <path d=\"M19.364 18.364a9 9 0 0 0 0-12.728\" />", "user": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\" />\n  <circle cx=\"12\" cy=\"7\" r=\"4\" />", "check": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M20 6 9 17l-5-5\" />", "headphones": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3\" />", "radio": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M16.247 7.761a6 6 0 0 1 0 8.478\" />\n  <path d=\"M19.075 4.933a10 10 0 0 1 0 14.134\" />\n  <path d=\"M4.925 19.067a10 10 0 0 1 0-14.134\" />\n  <path d=\"M7.753 16.239a6 6 0 0 1 0-8.478\" />\n  <circle cx=\"12\" cy=\"12\" r=\"2\" />", "settings": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\" />\n  <circle cx=\"12\" cy=\"12\" r=\"3\" />", "folder-open": "<!-- @license lucide-static v1.61.0 - ISC -->\n\n  <path d=\"m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2\" />"};
+const ic=n=>'<svg class="icsvg'+((n==='play'||n==='pause')?' fillp':'')+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(ICON_PATHS[n]||'')+'</svg>';
+
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}},set(k,v){localStorage.setItem(k,JSON.stringify(v));}};
 const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let profile=LS.get('dh_profile',null);
@@ -381,9 +405,9 @@ async function paintCovers(scope){
 function songRow(it,ctx){
   const fav=favs.includes(it.id);
   return '<div class="song'+(cur&&cur.id===it.id?' playing':'')+'" data-play="'+it.id+'">'
-  +(it.hasCover?'<img data-cov="'+it.id+'" alt="">':'<span class="ph">'+(it.kind==='video'?'🎬':'🎵')+'</span>')
+  +(it.hasCover?'<img data-cov="'+it.id+'" alt="">':'<span class="ph">'+ic(it.kind==='video'?'video':'music')+'</span>')
   +'<div style="flex:1;min-width:0"><div class="tt">'+esc(it.title)+'</div><div class="mt">'+esc([it.artist,it.year,it.kind==='video'?'Video':''].filter(Boolean).join(' · ')||it.name)+'</div></div>'
-  +'<span class="acts"><button class="icobtn'+(fav?' loved':'')+'" data-fav="'+it.id+'">'+(fav?'❤️':'🤍')+'</button>'
+  +'<span class="acts"><button class="icobtn'+(fav?' loved':'')+'" data-fav="'+it.id+'">'+ic('heart')+'</button>'
   +'<button class="icobtn" data-more="'+it.id+'">⋯</button>'
   +'</span></div>';
 }
@@ -398,7 +422,7 @@ function renderHome(){
   const rec=recents.map(id=>lib.find(x=>x.id===id)).filter(Boolean).slice(0,6);
   $('recentList').innerHTML=rec.length?rec.map(it=>songRow(it)).join(''):'<div class="empty">Abhi kuch nahi suna — Library se ya Free Gaano se shuru karo 🎧</div>';
   const fv=favs.map(id=>lib.find(x=>x.id===id)).filter(Boolean);
-  $('favList').innerHTML=fv.length?fv.map(it=>songRow(it)).join(''):'<div class="empty">Tap 🤍 on any song and it will appear here.</div>';
+  $('favList').innerHTML=fv.length?fv.map(it=>songRow(it)).join(''):'<div class="empty">Tap the heart icon on any song and it will appear here.</div>';
   bindRows($('recentList'));bindRows($('favList'));
   $('tileFavN').textContent=favs.size+' songs';
   const top=Object.entries(plays).sort((a,b)=>b[1]-a[1]).map(e=>lib.find(x=>x.id===e[0])).filter(Boolean).slice(0,6);
@@ -417,7 +441,7 @@ $('tabSongs').onclick=()=>{libTab='audio';$('tabSongs').classList.add('sel');$('
 $('tabVideos').onclick=()=>{libTab='video';$('tabVideos').classList.add('sel');$('tabSongs').classList.remove('sel');renderLib();};
 /* ---------- Playlists ---------- */
 function renderLists(){
-  $('plList').innerHTML=playlists.length?playlists.map((p,i)=>'<div class="song"><span class="ph">📂</span><div style="flex:1;min-width:0"><div class="tt">'+esc(p.name)+'</div><div class="mt">'+p.ids.length+' songs</div></div><span class="acts"><button class="icobtn" data-openpl="'+i+'">▶️ Open</button><button class="icobtn" data-delpl="'+i+'">🗑️</button></span></div>').join(''):'<div class="empty">Pehli playlist banao — upar naam likhkar "Banao" dabao.</div>';
+  $('plList').innerHTML=playlists.length?playlists.map((p,i)=>'<div class="song"><span class="ph">'+ic('list-music')+'</span><div style="flex:1;min-width:0"><div class="tt">'+esc(p.name)+'</div><div class="mt">'+p.ids.length+' songs</div></div><span class="acts"><button class="icobtn" data-openpl="'+i+'">'+ic('play')+' Open</button><button class="icobtn" data-delpl="'+i+'">'+ic('trash-2')+'</button></span></div>').join(''):'<div class="empty">Pehli playlist banao — upar naam likhkar "Banao" dabao.</div>';
   $('plList').querySelectorAll('[data-openpl]').forEach(b=>b.onclick=()=>{const p=playlists[Number(b.dataset.openpl)];const items=p.ids.map(id=>lib.find(x=>x.id===id)).filter(Boolean);$('plDetail').innerHTML='<h2 class="sec">📂 '+esc(p.name)+'</h2>'+(items.length?items.map(it=>songRow(it)).join(''):'<div class="empty">No songs in this playlist yet — open a song\'s ⋯ menu to add it.</div>');bindRows($('plDetail'));});
   $('plList').querySelectorAll('[data-delpl]').forEach(b=>b.onclick=()=>{if(confirm('Delete this playlist?')){playlists.splice(Number(b.dataset.delpl),1);saveSets();renderLists();$('plDetail').innerHTML='';}});
 }
@@ -430,7 +454,7 @@ function addToPlaylistFlow(id){
 }
 /* ---------- Song action sheet ---------- */
 function openSheet(id){const it=lib.find(x=>x.id===id);if(!it)return;$('sheetTitle').textContent=it.title;const fav=favs.includes(id);
-  $('sheetActs').innerHTML='<button class="sheetItem" data-sa="play">▶️ Play</button><button class="sheetItem" data-sa="fav">'+(fav?'💔 Remove from Favourites':'❤️ Add to Favourites')+'</button><button class="sheetItem" data-sa="pl">➕ Add to Playlist</button><button class="sheetItem" data-sa="tag">🏷️ Song Info (artist / year)</button><button class="sheetItem" data-sa="del">🗑️ Remove from App</button>';
+  $('sheetActs').innerHTML='<button class="sheetItem" data-sa="play">'+ic('play')+'Play</button><button class="sheetItem" data-sa="fav">'+ic('heart')+(fav?'Remove from Favourites':'Add to Favourites')+'</button><button class="sheetItem" data-sa="pl">'+ic('plus')+'Add to Playlist</button><button class="sheetItem" data-sa="tag">'+ic('tag')+'Song Info (artist / year)</button><button class="sheetItem" data-sa="del">'+ic('trash-2')+'Remove from App</button>';
   $('sheet').classList.remove('hidden');
   $('sheetActs').querySelectorAll('[data-sa]').forEach(b=>b.onclick=async()=>{const a=b.dataset.sa;closeSheet();
     if(a==='play')playFromList(id);else if(a==='fav')toggleFav(id);else if(a==='pl')addToPlaylistFlow(id);else if(a==='tag')tagFix(id);
@@ -516,8 +540,8 @@ function next(){step(1);}function prev(){step(-1);}
 $('cNext').onclick=next;$('miniNext').onclick=e=>{e.stopPropagation();next();};
 $('cPrev').onclick=prev;
 [au,vi].forEach(m=>{
-  m.addEventListener('play',()=>{$('cPlay').textContent='⏸️';$('miniPlay').textContent='⏸️';document.body.classList.add('isPlaying');if(m===au)fadeInAudio();});
-  m.addEventListener('pause',()=>{$('cPlay').textContent='▶️';$('miniPlay').textContent='▶️';document.body.classList.remove('isPlaying');});
+  m.addEventListener('play',()=>{$('cPlay').innerHTML=ic('pause');$('miniPlay').innerHTML=ic('pause');document.body.classList.add('isPlaying');if(m===au)fadeInAudio();});
+  m.addEventListener('pause',()=>{$('cPlay').innerHTML=ic('play');$('miniPlay').innerHTML=ic('play');document.body.classList.remove('isPlaying');});
   m.addEventListener('timeupdate',()=>{updSeek();syncLyrics();if(settings.xfade&&m===au&&m.duration&&m.currentTime>m.duration-3&&m.currentTime<m.duration)au.volume=Math.max(0,(m.duration-m.currentTime)/3);});
   m.addEventListener('loadedmetadata',updSeek);
   m.addEventListener('ended',()=>{if(repeat===2){m.currentTime=0;m.play();}else if(repeat===1||qi<queue.length-1)next();});
@@ -527,13 +551,13 @@ function updSeek(){const m=media();if(!m||!m.duration)return;const pc=m.currentT
 $('seek').addEventListener('input',e=>{const m=media();if(m&&m.duration)m.currentTime=e.target.value/100*m.duration;});
 $('mShuffle').onclick=()=>{shuffle=!shuffle;$('mShuffle').classList.toggle('on',shuffle);};
 $('mRepeat').onclick=()=>{repeat=(repeat+1)%3;$('mRepeat').textContent=['🔁 Repeat','🔂 Repeat One','🔁 Repeat'][repeat];$('mRepeat').classList.toggle('on',repeat>0);};
-function updFavBtn(){if(!cur)return;const f=favs.includes(cur.id);$('mFav').textContent=f?'❤️ Favourited':'🤍 Favourite';$('mFav').classList.toggle('on',f);}
+function updFavBtn(){if(!cur)return;const f=favs.includes(cur.id);$('mFav').innerHTML=ic('heart')+(f?'Favourited':'Favourite');$('mFav').classList.toggle('on',f);}
 $('mFav').onclick=()=>{if(cur)toggleFav(cur.id);};
 /* ---------- Queue (aage kya bajega) ---------- */
 function renderQueue(){
   const box=$('queueBox');if(!box)return;
   if(!queue.length){box.innerHTML='';return;}
-  box.innerHTML='<h2 class="sec">⏭️ Up Next</h2>'+queue.map((q,i)=>'<div class="song'+(i===qi?' playing':'')+'" data-q="'+i+'"><span class="ph">'+(q.kind==='video'?'🎬':'🎵')+'</span><div style="flex:1;min-width:0"><div class="tt">'+esc(q.title)+'</div><div class="mt">'+esc(q.artist||'')+'</div></div>'+(i===qi?'<span class="eq"><span></span><span></span><span></span><span></span><span></span></span>':'')+'</div>').join('');
+  box.innerHTML='<h2 class="sec">Up Next</h2>'+queue.map((q,i)=>'<div class="song'+(i===qi?' playing':'')+'" data-q="'+i+'"><span class="ph">'+ic(q.kind==='video'?'video':'music')+'</span><div style="flex:1;min-width:0"><div class="tt">'+esc(q.title)+'</div><div class="mt">'+esc(q.artist||'')+'</div></div>'+(i===qi?'<span class="eq"><span></span><span></span><span></span><span></span><span></span></span>':'')+'</div>').join('');
   box.querySelectorAll('[data-q]').forEach(el=>el.onclick=()=>{qi=Number(el.dataset.q);startItem(queue[qi]);});
 }
 /* ---------- Lyrics ---------- */
@@ -571,7 +595,7 @@ function jamItem(t){return{jam:true,id:'jam'+t.id,title:t.name,artist:t.artist_n
 let freeSrc='jam';
 function paintFree(){
   const box=$('jamList');
-  box.innerHTML=jamResults.length?jamResults.map(it=>'<div class="song" data-jam="'+it.id+'">'+(it.image?'<img src="'+esc(it.image)+'" alt="">':'<span class="ph">🎵</span>')+'<div style="flex:1;min-width:0"><div class="tt">'+esc(it.title)+'</div><div class="mt">'+esc([it.artist,it.year].filter(Boolean).join(' · '))+'</div></div><span class="acts"><button class="icobtn" data-jamdl="'+it.id+'">⬇️ Save</button></span></div>').join(''):'<div class="empty">Nothing found — try another name.</div>';
+  box.innerHTML=jamResults.length?jamResults.map(it=>'<div class="song" data-jam="'+it.id+'">'+(it.image?'<img src="'+esc(it.image)+'" alt="">':'<span class="ph">'+ic('music')+'</span>')+'<div style="flex:1;min-width:0"><div class="tt">'+esc(it.title)+'</div><div class="mt">'+esc([it.artist,it.year].filter(Boolean).join(' · '))+'</div></div><span class="acts">'+((it.src==='audius'&&!it.downloadable)?'':'<button class="icobtn" data-jamdl="'+it.id+'">'+ic('download')+' Save</button>')+'</span></div>').join(''):'<div class="empty">Nothing found — try another name.</div>';
   box.querySelectorAll('[data-jam]').forEach(el=>el.onclick=e=>{if(e.target.closest('button'))return;setQueue(jamResults,el.dataset.jam);});
   box.querySelectorAll('[data-jamdl]').forEach(b=>b.onclick=async()=>{const it=jamResults.find(x=>x.id===b.dataset.jamdl);if(!it)return;b.textContent='⏳';try{const r=await fetch(it.audio);const blob=await r.blob();await idbPut({id:'f'+Date.now(),name:it.title+'.mp3',kind:'audio',blob,cover:null,title:it.title,artist:it.artist,year:it.year,album:it.album,lyrics:it.lyrics,source:it.src||'jamendo'});await loadLib();b.textContent='✅ Saved';}catch(e){b.textContent='❌ Needs internet';}});
 }
@@ -594,9 +618,20 @@ async function iaLoad(q){
     jamResults=items;paintFree();
   }catch(e){box.innerHTML='<div class="empty">Internet is needed for Internet Archive.</div>';}
 }
-function freeLoad(q){if(freeSrc==='ia')iaLoad(q);else jamLoad(q);}
-$('srcJam').onclick=()=>{freeSrc='jam';$('srcJam').classList.add('sel');$('srcIA').classList.remove('sel');jamResults=[];freeLoad($('jamSearch').value.trim());};
-$('srcIA').onclick=()=>{freeSrc='ia';$('srcIA').classList.add('sel');$('srcJam').classList.remove('sel');jamResults=[];freeLoad($('jamSearch').value.trim());};
+function freeLoad(q){if(freeSrc==='ia')iaLoad(q);else if(freeSrc==='audius')audiusLoad(q);else jamLoad(q);}
+async function audiusLoad(q){
+  const box=$('jamList');box.innerHTML='<div class="empty">Loading Audius…</div>';
+  try{
+    const url=q?('https://api.audius.co/v1/tracks/search?query='+encodeURIComponent(q)+'&app_name=DHUNPLAYER&limit=30'):('https://api.audius.co/v1/tracks/trending?app_name=DHUNPLAYER&limit=30');
+    const r=await fetch(url);const j=await r.json();
+    jamResults=(j.data||[]).map(t=>({jam:true,src:'audius',downloadable:!!t.is_downloadable,id:'au'+t.id,title:t.title||'Untitled',artist:(t.user&&t.user.name)||'Audius artist',album:'',year:(t.release_date||'').slice(0,4),audio:'https://api.audius.co/v1/tracks/'+t.id+'/stream?app_name=DHUNPLAYER',image:(t.artwork&&(t.artwork['150x150']||t.artwork['480x480']))||'',lyrics:null,kind:'audio',name:t.title||''}));
+    paintFree();
+  }catch(e){box.innerHTML='<div class="empty">Audius could not load — check internet and retry.</div>';}
+}
+function setSrcUI(){$('srcJam').classList.toggle('sel',freeSrc==='jam');$('srcIA').classList.toggle('sel',freeSrc==='ia');$('srcAU').classList.toggle('sel',freeSrc==='audius');}
+$('srcJam').onclick=()=>{freeSrc='jam';setSrcUI();jamResults=[];freeLoad($('jamSearch').value.trim());};
+$('srcIA').onclick=()=>{freeSrc='ia';setSrcUI();jamResults=[];freeLoad($('jamSearch').value.trim());};
+$('srcAU').onclick=()=>{freeSrc='audius';setSrcUI();jamResults=[];freeLoad($('jamSearch').value.trim());};
 async function jamLoad(q){
   const box=$('jamList');box.innerHTML='<div class="empty">Searching…</div>';
   try{
@@ -679,7 +714,8 @@ function applySettings(){
   root.style.setProperty('--acc',pair[0]);root.style.setProperty('--acc2',pair[1]);
   document.querySelectorAll('[data-theme]').forEach(b=>b.classList.toggle('sel',b.dataset.theme===settings.theme));
   document.querySelectorAll('[data-acc]').forEach(b=>b.classList.toggle('sel',b.dataset.acc===settings.acc));
-  document.querySelectorAll('[data-plbg]').forEach(b=>b.classList.toggle('sel',b.dataset.plbg===settings.plbg));
+  document.querySelectorAll('[data-ic]').forEach(el=>{el.innerHTML=ic(el.dataset.ic);});
+document.querySelectorAll('[data-plbg]').forEach(b=>b.classList.toggle('sel',b.dataset.plbg===settings.plbg));
   document.querySelectorAll('[data-density]').forEach(b=>b.classList.toggle('sel',b.dataset.density===settings.density));
   document.body.classList.toggle('compact',settings.density==='compact');
   $('tglXfade').classList.toggle('on',!!settings.xfade);
@@ -713,9 +749,9 @@ $('tglAnim').onclick=()=>{settings.anim=!settings.anim;saveSets();applySettings(
 let sleepTimer=null,curRate=1;const RATES=[1,1.25,1.5,2,0.5,0.75];
 const SLEEPOPTS=[0,10,20,30,60];let sleepIdx=0;
 $('mSleep').onclick=()=>{sleepIdx=(sleepIdx+1)%SLEEPOPTS.length;const m=SLEEPOPTS[sleepIdx];clearTimeout(sleepTimer);
-  $('mSleep').textContent=m?('⏰ Sleep: '+m+'m'):'⏰ Sleep: Off';$('mSleep').classList.toggle('on',!!m);
-  if(m)sleepTimer=setTimeout(()=>{try{media().pause();}catch(e){}sleepIdx=0;$('mSleep').textContent='⏰ Sleep: Off';$('mSleep').classList.remove('on');},m*60000);};
-$('mSpeed').onclick=()=>{curRate=RATES[(RATES.indexOf(curRate)+1)%RATES.length];try{media().playbackRate=curRate;}catch(e){}$('mSpeed').textContent='⏩ '+curRate+'x';};
+  $('mSleep').innerHTML=ic('timer')+(m?('Sleep: '+m+'m'):'Sleep: Off');$('mSleep').classList.toggle('on',!!m);
+  if(m)sleepTimer=setTimeout(()=>{try{media().pause();}catch(e){}sleepIdx=0;$('mSleep').innerHTML=ic('timer')+'Sleep: Off';$('mSleep').classList.remove('on');},m*60000);};
+$('mSpeed').onclick=()=>{curRate=RATES[(RATES.indexOf(curRate)+1)%RATES.length];try{media().playbackRate=curRate;}catch(e){}$('mSpeed').innerHTML=ic('gauge')+curRate+'x';};
 function fadeInAudio(){if(!settings.xfade)return;au.volume=0;const iv=setInterval(()=>{au.volume=Math.min(1,au.volume+0.08);if(au.volume>=1)clearInterval(iv);},120);}
 function dynAccent(it){
   const pl=$('player');pl.style.removeProperty('--acc');pl.style.removeProperty('--acc2');
@@ -726,7 +762,7 @@ function dynAccent(it){
   img.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=12;const x=c.getContext('2d');x.drawImage(img,0,0,12,12);const d=x.getImageData(0,0,12,12).data;let r=0,g=0,b=0,n=0;for(let i=0;i<d.length;i+=16){r+=d[i];g+=d[i+1];b+=d[i+2];n++;}r=Math.round(r/n);g=Math.round(g/n);b=Math.round(b/n);pl.style.setProperty('--acc','rgb('+r+','+g+','+b+')');pl.style.setProperty('--acc2','rgb('+Math.min(255,r+50)+','+Math.min(255,g+30)+','+Math.max(0,b-30)+')');}catch(e){}};
   img.src=src;
 }
-document.querySelectorAll('.herochip').forEach(b=>b.onclick=()=>{openView('free');freeSrc='jam';$('srcJam').classList.add('sel');$('srcIA').classList.remove('sel');$('jamSearch').value=b.dataset.hq;freeLoad(b.dataset.hq);});
+document.querySelectorAll('.herochip').forEach(b=>b.onclick=()=>{openView('free');freeSrc='jam';setSrcUI();$('jamSearch').value=b.dataset.hq;freeLoad(b.dataset.hq);});
 $('tileFav').onclick=()=>openView('library');
 $('tileFree').onclick=()=>openView('free');
 /* ================= NAV / SETTINGS / GATE ================= */
