@@ -25,6 +25,8 @@ jobs:
         run: npx cap add android
       - name: Sync Capacitor
         run: npx cap sync android
+      - name: Generate launcher icons
+        run: npx --yes @capacitor/assets generate --iconBackgroundColor '#0a0a0c'
       - name: Build debug APK
         run: cd android && ./gradlew assembleDebug
       - name: Rename APK
