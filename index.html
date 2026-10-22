@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Dhun — Music Player</title>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://api.jamendo.com https://*.jamendo.com https://musicbrainz.org; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; media-src 'self' blob: https:; object-src 'none'; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://api.jamendo.com https://*.jamendo.com https://musicbrainz.org https://archive.org https://*.archive.org; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; media-src 'self' blob: https:; object-src 'none'; base-uri 'self'">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <meta name="theme-color" content="#0b1220">
@@ -172,7 +172,9 @@ body.light #lyricsBox .ln.act{color:#131a2e}
 
   <section id="view-free" class="view hidden">
     <h2 class="sec">🆓 Free Gaane (legal download ke saath)</h2>
-    <p class="mut" style="margin:0 0 8px">Ye gaane khule license wale hain — suno, aur pasand aaye to library me download karke hamesha ke liye rakho.</p>
+    <p class="mut" style="margin:0 0 8px">Ye gaane khule license wale hain — suno, aur pasand aaye to ⬇️ dabakar library me download kar lo, phir bina internet ke chalenge.</p>
+    <div class="tabs"><button id="srcJam" class="sel">🎧 Jamendo</button><button id="srcIA">🏛️ Internet Archive</button></div>
+    <div class="optrow" style="margin:4px 0 2px"><button class="optbtn" data-chip="hindi">🇮🇳 Hindi</button><button class="optbtn" data-chip="rap">🎤 Rap</button><button class="optbtn" data-chip="folk">🪕 Folk</button><button class="optbtn" data-chip="english">🌍 English</button><button class="optbtn" data-chip="punjabi">🥁 Punjabi</button><button class="optbtn" data-chip="lofi">🌙 Lo-Fi</button></div>
     <div class="searchbar"><input id="jamSearch" type="text" placeholder="Free gaana khojo…"><button class="btn small" id="jamGo">Khojo</button></div>
     <div id="jamList"><div class="empty">Upar khoj karke dekho — ya thoda ruko, mashhoor free gaane aa rahe hain…</div></div>
   </section>
@@ -495,19 +497,47 @@ async function jamFetch(params){
   const j=await r.json();return j.results||[];
 }
 function jamItem(t){return{jam:true,id:'jam'+t.id,title:t.name,artist:t.artist_name||'',album:t.album_name||'',year:((t.releasedate||'').match(/\d{4}/)||[''])[0],audio:t.audio,image:t.image||'',lyrics:t.lyrics||null,kind:'audio',name:t.name};}
+let freeSrc='jam';
+function paintFree(){
+  const box=$('jamList');
+  box.innerHTML=jamResults.length?jamResults.map(it=>'<div class="song" data-jam="'+it.id+'">'+(it.image?'<img src="'+esc(it.image)+'" alt="">':'<span class="ph">🎵</span>')+'<div style="flex:1;min-width:0"><div class="tt">'+esc(it.title)+'</div><div class="mt">'+esc([it.artist,it.year].filter(Boolean).join(' · '))+'</div></div><span class="acts"><button class="icobtn" data-jamdl="'+it.id+'">⬇️ Library me</button></span></div>').join(''):'<div class="empty">Kuch nahi mila — doosra naam try karo.</div>';
+  box.querySelectorAll('[data-jam]').forEach(el=>el.onclick=e=>{if(e.target.closest('button'))return;setQueue(jamResults,el.dataset.jam);});
+  box.querySelectorAll('[data-jamdl]').forEach(b=>b.onclick=async()=>{const it=jamResults.find(x=>x.id===b.dataset.jamdl);if(!it)return;b.textContent='⏳';try{const r=await fetch(it.audio);const blob=await r.blob();await idbPut({id:'f'+Date.now(),name:it.title+'.mp3',kind:'audio',blob,cover:null,title:it.title,artist:it.artist,year:it.year,album:it.album,lyrics:it.lyrics,source:it.src||'jamendo'});await loadLib();b.textContent='✅ Jud gaya';}catch(e){b.textContent='❌ Net chahiye';}});
+}
+async function iaLoad(q){
+  const box=$('jamList');box.innerHTML='<div class="empty">Internet Archive me khoj raha hoon…</div>';
+  try{
+    const query=q?('(title:('+q+') OR creator:('+q+') OR subject:('+q+')) AND mediatype:audio'):('mediatype:audio AND collection:opensource_audio');
+    const r=await fetch('https://archive.org/advancedsearch.php?q='+encodeURIComponent(query)+'&fl[]=identifier,title,creator,year&rows=20&output=json');
+    const j=await r.json();const docs=(j.response||{}).docs||[];
+    const items=[];
+    for(const d of docs.slice(0,20)){
+      try{
+        const mr=await fetch('https://archive.org/metadata/'+d.identifier);const mj=await mr.json();
+        const files=(mj.files||[]).filter(f=>/\.mp3$/i.test(f.name));
+        if(!files.length)continue;
+        const f=files.sort((a,b)=>(a.size||0)-(b.size||0))[0];
+        items.push({jam:true,src:'archive',id:'ia'+d.identifier,title:d.title||d.identifier,artist:(Array.isArray(d.creator)?d.creator[0]:d.creator)||'',album:'',year:d.year||'',audio:'https://archive.org/download/'+d.identifier+'/'+encodeURIComponent(f.name),image:'https://archive.org/services/img/'+d.identifier,lyrics:null,kind:'audio',name:d.title||''});
+      }catch(e){}
+    }
+    jamResults=items;paintFree();
+  }catch(e){box.innerHTML='<div class="empty">Internet chahiye Internet Archive ke liye.</div>';}
+}
+function freeLoad(q){if(freeSrc==='ia')iaLoad(q);else jamLoad(q);}
+$('srcJam').onclick=()=>{freeSrc='jam';$('srcJam').classList.add('sel');$('srcIA').classList.remove('sel');jamResults=[];freeLoad($('jamSearch').value.trim());};
+$('srcIA').onclick=()=>{freeSrc='ia';$('srcIA').classList.add('sel');$('srcJam').classList.remove('sel');jamResults=[];freeLoad($('jamSearch').value.trim());};
 async function jamLoad(q){
   const box=$('jamList');box.innerHTML='<div class="empty">Khoj raha hoon…</div>';
   try{
     const res=await jamFetch(q?('search='+encodeURIComponent(q)):('order=popularity_total'));
     jamResults=res.map(jamItem);
-    box.innerHTML=jamResults.length?jamResults.map(it=>'<div class="song" data-jam="'+it.id+'">'+(it.image?'<img src="'+esc(it.image)+'" alt="">':'<span class="ph">🎵</span>')+'<div style="flex:1;min-width:0"><div class="tt">'+esc(it.title)+'</div><div class="mt">'+esc([it.artist,it.year].filter(Boolean).join(' · '))+'</div></div><span class="acts"><button class="icobtn" data-jamdl="'+it.id+'">⬇️ Library me</button></span></div>').join(''):'<div class="empty">Kuch nahi mila — doosra naam try karo.</div>';
-    box.querySelectorAll('[data-jam]').forEach(el=>el.onclick=e=>{if(e.target.closest('button'))return;setQueue(jamResults,el.dataset.jam);});
-    box.querySelectorAll('[data-jamdl]').forEach(b=>b.onclick=async()=>{const it=jamResults.find(x=>x.id===b.dataset.jamdl);if(!it)return;b.textContent='⏳';try{const r=await fetch(it.audio);const blob=await r.blob();await idbPut({id:'f'+Date.now(),name:it.title+'.mp3',kind:'audio',blob,cover:null,title:it.title,artist:it.artist,year:it.year,album:it.album,lyrics:it.lyrics,source:'jamendo'});await loadLib();b.textContent='✅ Jud gaya';}catch(e){b.textContent='❌ Net chahiye';}});
+    paintFree();
   }catch(e){
     box.innerHTML='<div class="empty">'+(e.message==='setup'?'Free Gaano ka setup abhi ho raha hai — thodi der me chalega.':'Internet chahiye Free Gaano ke liye.')+'</div>';
   }
 }
-$('jamGo').onclick=()=>jamLoad($('jamSearch').value.trim());
+$('jamGo').onclick=()=>freeLoad($('jamSearch').value.trim());
+document.querySelectorAll('[data-chip]').forEach(b=>b.onclick=()=>{$('jamSearch').value=b.dataset.chip;freeLoad(b.dataset.chip);});
 /* ================= VOICE: "Hey Dhun" wake word + hukum ================= */
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 let rec=null,awake=false,awakeTimer=null,recWanted=false,micBlocked=false;
@@ -604,7 +634,7 @@ function go(v){
   curView=v;
   ['home','library','free','lists','settings'].forEach(x=>$('view-'+x).classList.toggle('hidden',x!==v));
   document.querySelectorAll('#bottomNav button').forEach(b=>b.classList.toggle('act',b.dataset.nav===v));
-  if(v==='free'&&!jamResults.length)jamLoad('');
+  if(v==='free'&&!jamResults.length)freeLoad('');
   if(v==='lists')renderLists();
   window.scrollTo(0,0);
 }
