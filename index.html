@@ -147,6 +147,29 @@ body.light .sheetCard{background:#f4f6fc}
 #sheetTitle{font-weight:700;font-size:16px;padding:6px 4px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sheetItem{display:flex;width:100%;align-items:center;gap:12px;background:none;border:none;color:var(--text);font-size:15px;padding:13px 6px;border-top:1px solid var(--border);text-align:left}
 .sheetItem:active{background:var(--card2)}
+body.compact .song{padding:7px 10px;margin-bottom:6px;border-radius:13px}
+body.compact .song img,body.compact .song .ph{width:38px;height:38px}
+#player.noart .coverWrap{display:none}
+#player.noart .pt{margin-top:34px;font-size:24px}
+
+body{background:radial-gradient(120% 55% at 50% -8%,rgba(255,45,60,.20),transparent 60%),radial-gradient(90% 40% at 85% 110%,rgba(255,120,0,.10),transparent 60%),var(--bg)}
+.hero{margin:2px 0 14px;padding:20px 18px;border-radius:26px;background:linear-gradient(135deg,#3d0512,#8f0f26 55%,#e83a14);color:#fff;box-shadow:0 18px 40px rgba(190,10,40,.35);position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-30px;top:-30px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.35),transparent 70%)}
+.hero h2{margin:0 0 4px;font-size:23px;font-weight:800}
+.hero p{margin:0 0 12px;opacity:.88;font-size:13px}
+.herochips{display:flex;gap:7px;flex-wrap:wrap;position:relative;z-index:1}
+.herochip{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.14);color:#fff;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 14px}
+.tile{border-radius:20px;padding:14px;color:#fff;cursor:pointer;box-shadow:0 10px 24px rgba(0,0,0,.30)}
+.tile small{opacity:.88;font-weight:700;font-size:11px;letter-spacing:.4px}
+.tile b{display:block;font-size:24px;margin-top:2px}
+.tile.fav{background:linear-gradient(135deg,#ff416c,#ff4b2b)}
+.tile.free{background:linear-gradient(135deg,#f7971e,#ffd200);color:#231a00}
+#player .glassPanel{background:rgba(16,8,12,.55);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border:1px solid rgba(255,255,255,.15);border-radius:26px;padding:14px 14px 8px;margin-top:12px;box-shadow:0 18px 44px rgba(0,0,0,.4)}
+#cPlay{box-shadow:0 0 36px rgba(255,70,50,.55),0 10px 26px rgba(0,0,0,.45)!important}
+.modeRow button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
+#voiceGlow::after{content:'';position:absolute;left:50%;top:40%;width:150px;height:150px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 32%,#ffa25e,#f43f3f 48%,#7a0a1e 100%);box-shadow:0 0 90px rgba(255,45,70,.8),inset 0 -18px 34px rgba(0,0,0,.35);animation:orbPulse 1.5s ease-in-out infinite}
+@keyframes orbPulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.08)}}
 </style>
 </head>
 <body>
@@ -173,12 +196,15 @@ body.light .sheetCard{background:#f4f6fc}
   </header>
 
   <section id="view-home" class="view">
-    <h2 class="sec">👋 Hi, <span id="helloName">Friend</span></h2>
+    <div class="hero"><h2>Hey <span id="helloName">Friend</span> 👋</h2><p>What are you looking for today?</p><div class="herochips"><button class="herochip" data-hq="hindi songs">🇮🇳 Hindi</button><button class="herochip" data-hq="punjabi">🥁 Punjabi</button><button class="herochip" data-hq="tamil">🎶 Tamil</button><button class="herochip" data-hq="telugu">🎶 Telugu</button><button class="herochip" data-hq="malayalam">🎶 Malayalam</button><button class="herochip" data-hq="english pop">🌍 English</button></div></div>
+    <div class="tiles"><div class="tile fav" id="tileFav"><small>❤️ FAVOURITES</small><b id="tileFavN">0 songs</b></div><div class="tile free" id="tileFree"><small>🌐 FREE MUSIC — JAMENDO + ARCHIVE</small><b>Browse →</b></div></div>
     <div class="box"><h3>🎧 Add Your Music</h3><p class="mut">Pick MP3/MP4 files from your phone — they are saved inside the app and play offline. Add a matching .lrc file and lyrics come along too.</p><label class="btn" style="display:block;text-align:center;cursor:pointer">➕ Add Songs / Videos<input type="file" id="filePick" accept="audio/*,video/*,.lrc" multiple class="hidden"></label></div>
     <h2 class="sec">Recently Played</h2>
     <div id="recentList"></div>
     <h2 class="sec">Favourites</h2>
     <div id="favList"></div>
+    <h2 class="sec" id="topSec">🔥 Most Played</h2>
+    <div id="topList"></div>
   </section>
 
   <section id="view-library" class="view hidden">
@@ -209,8 +235,13 @@ body.light .sheetCard{background:#f4f6fc}
       <div class="grp">Appearance</div>
       <div class="swrow"><span>🌗 Theme<br><span class="mut">Dark, Light, or match your phone</span></span><span class="optrow"><button class="optbtn" data-theme="dark">🌙 Dark</button><button class="optbtn" data-theme="light">☀️ Light</button><button class="optbtn" data-theme="system">📱 System</button></span></div>
       <div class="swrow"><span>🎨 Accent Colour<br><span class="mut">The whole app follows this colour</span></span><span class="optrow"><button class="swatch" data-acc="violet" style="background:linear-gradient(135deg,#ff3b30,#ff9500)"></button><button class="swatch" data-acc="pink" style="background:linear-gradient(135deg,#ff5e8a,#c9184a)"></button><button class="swatch" data-acc="green" style="background:linear-gradient(135deg,#22c55e,#0d9488)"></button><button class="swatch" data-acc="orange" style="background:linear-gradient(135deg,#f59e0b,#d97706)"></button><button class="swatch" data-acc="sky" style="background:linear-gradient(135deg,#38bdf8,#2563eb)"></button><button class="swatch" data-acc="red" style="background:linear-gradient(135deg,#a78bfa,#6d28d9)"></button></span></div>
-      <div class="grp">Player</div>
+      <div class="swrow"><span>📐 Layout Density<br><span class="mut">Comfortable or compact list spacing</span></span><span class="optrow"><button class="optbtn" data-density="cozy">Comfortable</button><button class="optbtn" data-density="compact">Compact</button></span></div>
+    </div>
+    <div class="box">
+    <div class="grp">Player</div>
       <div class="swrow"><span>🖼️ Player Background<br><span class="mut">What shows behind the song that is playing</span></span><span class="optrow"><button class="optbtn" data-plbg="blur">🌫️ Blur</button><button class="optbtn" data-plbg="grad">🌈 Gradient</button><button class="optbtn" data-plbg="solid">⬛ Plain</button></span></div>
+      <div class="swrow"><span>🔀 Crossfade<br><span class="mut">Songs melt into each other (3 seconds)</span></span><button class="tgl" id="tglXfade"></button></div>
+      <div class="swrow"><span>🙈 Hide Player Artwork<br><span class="mut">Minimal player without the big cover</span></span><button class="tgl" id="tglArt"></button></div>
       <div class="swrow"><span>📊 Visualizer<br><span class="mut">Animated bars under the slider while music plays</span></span><button class="tgl" id="tglViz"></button></div>
       <div class="swrow"><span>✨ Animations<br><span class="mut">All liquid-glass motion, on or off</span></span><button class="tgl" id="tglAnim"></button></div>
       <div class="grp">Voice & Sound</div>
@@ -242,6 +273,7 @@ body.light .sheetCard{background:#f4f6fc}
   <div class="coverWrap"><img id="plCover" class="cover" alt=""></div>
   <div class="pt" id="plTitle">—</div>
   <div class="pm" id="plMeta">—</div>
+  <div class="glassPanel">
   <div class="seek"><span id="tCur">0:00</span><input type="range" id="seek" min="0" max="100" value="0"><span id="tDur">0:00</span></div>
   <div class="viz" id="viz"></div>
   <div class="controls">
@@ -252,10 +284,13 @@ body.light .sheetCard{background:#f4f6fc}
   <div class="modeRow">
     <button id="mShuffle">🔀 Shuffle</button>
     <button id="mRepeat">🔁 Repeat</button>
+    <button id="mSleep">⏰ Sleep: Off</button>
+    <button id="mSpeed">⏩ 1x</button>
     <button id="mFav">🤍 Favourite</button>
     <button id="mLyrics">📜 Lyrics</button>
   </div>
   <div id="lyricsBox" class="hidden"><div class="mut">No lyrics for this song yet.<br>Add a matching .lrc file with the song and synced lyrics will play here.</div></div>
+  </div>
   <div id="queueBox"></div>
   </div>
 </div>
@@ -275,7 +310,8 @@ const $=id=>document.getElementById(id);
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}},set(k,v){localStorage.setItem(k,JSON.stringify(v));}};
 const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let profile=LS.get('dh_profile',null);
-let settings=Object.assign({wake:false,sfx:true,theme:'dark',acc:'violet',plbg:'blur',viz:true,anim:true},LS.get('dh_settings',{}));
+let settings=Object.assign({wake:false,sfx:true,theme:'dark',acc:'violet',plbg:'blur',viz:true,anim:true,xfade:false,hideArt:false,density:'cozy'},LS.get('dh_settings',{}));
+let plays=LS.get('dh_plays',{});
 let favs=LS.get('dh_favs',[]);
 let playlists=LS.get('dh_playlists',[]);
 let recents=LS.get('dh_recents',[]);
@@ -364,6 +400,10 @@ function renderHome(){
   const fv=favs.map(id=>lib.find(x=>x.id===id)).filter(Boolean);
   $('favList').innerHTML=fv.length?fv.map(it=>songRow(it)).join(''):'<div class="empty">Tap 🤍 on any song and it will appear here.</div>';
   bindRows($('recentList'));bindRows($('favList'));
+  $('tileFavN').textContent=favs.size+' songs';
+  const top=Object.entries(plays).sort((a,b)=>b[1]-a[1]).map(e=>lib.find(x=>x.id===e[0])).filter(Boolean).slice(0,6);
+  $('topSec').style.display=top.length?'':'none';
+  $('topList').innerHTML=top.map(it=>songRow(it)).join('');bindRows($('topList'));
   if(profile)$('helloName').textContent=profile.name;
 }
 function renderLib(){
@@ -448,7 +488,9 @@ async function startItem(it){
   else if(it.hasCover){const rec=await idbGet(it.id);if(rec&&rec.cover)$('plCover').src=URL.createObjectURL(rec.cover);else $('plCover').src=TRANSP;}
   else $('plCover').src=TRANSP;
   $('mini').classList.remove('hidden');
-  if(!it.jam){recents=[it.id,...recents.filter(x=>x!==it.id)].slice(0,12);saveSets();renderHome();}
+  if(!it.jam){recents=[it.id,...recents.filter(x=>x!==it.id)].slice(0,12);plays[it.id]=(plays[it.id]||0)+1;LS.set('dh_plays',plays);saveSets();renderHome();}
+  try{media().playbackRate=curRate;}catch(e){}
+  dynAccent(it);
   updFavBtn();renderLyrics();renderQueue();updPlayerBg();const cv=$('plCover');cv.style.animation='none';void cv.offsetWidth;cv.style.animation='';openPlayer();
   if('mediaSession' in navigator){
     navigator.mediaSession.metadata=new MediaMetadata({title:it.title,artist:it.artist||'',album:it.album||'',artwork:[{src:it.jam&&it.image?it.image:'icon-512.png',sizes:'512x512',type:'image/png'}]});
@@ -474,9 +516,9 @@ function next(){step(1);}function prev(){step(-1);}
 $('cNext').onclick=next;$('miniNext').onclick=e=>{e.stopPropagation();next();};
 $('cPrev').onclick=prev;
 [au,vi].forEach(m=>{
-  m.addEventListener('play',()=>{$('cPlay').textContent='⏸️';$('miniPlay').textContent='⏸️';document.body.classList.add('isPlaying');});
+  m.addEventListener('play',()=>{$('cPlay').textContent='⏸️';$('miniPlay').textContent='⏸️';document.body.classList.add('isPlaying');if(m===au)fadeInAudio();});
   m.addEventListener('pause',()=>{$('cPlay').textContent='▶️';$('miniPlay').textContent='▶️';document.body.classList.remove('isPlaying');});
-  m.addEventListener('timeupdate',()=>{updSeek();syncLyrics();});
+  m.addEventListener('timeupdate',()=>{updSeek();syncLyrics();if(settings.xfade&&m===au&&m.duration&&m.currentTime>m.duration-3&&m.currentTime<m.duration)au.volume=Math.max(0,(m.duration-m.currentTime)/3);});
   m.addEventListener('loadedmetadata',updSeek);
   m.addEventListener('ended',()=>{if(repeat===2){m.currentTime=0;m.play();}else if(repeat===1||qi<queue.length-1)next();});
 });
@@ -638,6 +680,11 @@ function applySettings(){
   document.querySelectorAll('[data-theme]').forEach(b=>b.classList.toggle('sel',b.dataset.theme===settings.theme));
   document.querySelectorAll('[data-acc]').forEach(b=>b.classList.toggle('sel',b.dataset.acc===settings.acc));
   document.querySelectorAll('[data-plbg]').forEach(b=>b.classList.toggle('sel',b.dataset.plbg===settings.plbg));
+  document.querySelectorAll('[data-density]').forEach(b=>b.classList.toggle('sel',b.dataset.density===settings.density));
+  document.body.classList.toggle('compact',settings.density==='compact');
+  $('tglXfade').classList.toggle('on',!!settings.xfade);
+  $('tglArt').classList.toggle('on',!!settings.hideArt);
+  $('player').classList.toggle('noart',!!settings.hideArt);
   $('tglViz').classList.toggle('on',!!settings.viz);
   $('tglAnim').classList.toggle('on',!!settings.anim);
   $('viz').classList.toggle('on',!!settings.viz);
@@ -657,8 +704,31 @@ function updPlayerBg(){
 document.querySelectorAll('[data-theme]').forEach(b=>b.onclick=()=>{settings.theme=b.dataset.theme;saveSets();applySettings();});
 document.querySelectorAll('[data-acc]').forEach(b=>b.onclick=()=>{settings.acc=b.dataset.acc;saveSets();applySettings();});
 document.querySelectorAll('[data-plbg]').forEach(b=>b.onclick=()=>{settings.plbg=b.dataset.plbg;saveSets();applySettings();});
+document.querySelectorAll('[data-density]').forEach(b=>b.onclick=()=>{settings.density=b.dataset.density;saveSets();applySettings();});
+$('tglXfade').onclick=()=>{settings.xfade=!settings.xfade;saveSets();applySettings();};
+$('tglArt').onclick=()=>{settings.hideArt=!settings.hideArt;saveSets();applySettings();};
 $('tglViz').onclick=()=>{settings.viz=!settings.viz;saveSets();applySettings();};
 $('tglAnim').onclick=()=>{settings.anim=!settings.anim;saveSets();applySettings();};
+/* ---------- Echo-style extras: sleep, speed, crossfade ramp, dynamic colour ---------- */
+let sleepTimer=null,curRate=1;const RATES=[1,1.25,1.5,2,0.5,0.75];
+const SLEEPOPTS=[0,10,20,30,60];let sleepIdx=0;
+$('mSleep').onclick=()=>{sleepIdx=(sleepIdx+1)%SLEEPOPTS.length;const m=SLEEPOPTS[sleepIdx];clearTimeout(sleepTimer);
+  $('mSleep').textContent=m?('⏰ Sleep: '+m+'m'):'⏰ Sleep: Off';$('mSleep').classList.toggle('on',!!m);
+  if(m)sleepTimer=setTimeout(()=>{try{media().pause();}catch(e){}sleepIdx=0;$('mSleep').textContent='⏰ Sleep: Off';$('mSleep').classList.remove('on');},m*60000);};
+$('mSpeed').onclick=()=>{curRate=RATES[(RATES.indexOf(curRate)+1)%RATES.length];try{media().playbackRate=curRate;}catch(e){}$('mSpeed').textContent='⏩ '+curRate+'x';};
+function fadeInAudio(){if(!settings.xfade)return;au.volume=0;const iv=setInterval(()=>{au.volume=Math.min(1,au.volume+0.08);if(au.volume>=1)clearInterval(iv);},120);}
+function dynAccent(it){
+  const pl=$('player');pl.style.removeProperty('--acc');pl.style.removeProperty('--acc2');
+  if(settings.hideArt)return;
+  let src='';if(it.jam&&it.image)src=it.image;else if(it.hasCover&&coverCache[it.id])src=coverCache[it.id];
+  if(!src)return;
+  const img=new Image();img.crossOrigin='anonymous';
+  img.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=12;const x=c.getContext('2d');x.drawImage(img,0,0,12,12);const d=x.getImageData(0,0,12,12).data;let r=0,g=0,b=0,n=0;for(let i=0;i<d.length;i+=16){r+=d[i];g+=d[i+1];b+=d[i+2];n++;}r=Math.round(r/n);g=Math.round(g/n);b=Math.round(b/n);pl.style.setProperty('--acc','rgb('+r+','+g+','+b+')');pl.style.setProperty('--acc2','rgb('+Math.min(255,r+50)+','+Math.min(255,g+30)+','+Math.max(0,b-30)+')');}catch(e){}};
+  img.src=src;
+}
+document.querySelectorAll('.herochip').forEach(b=>b.onclick=()=>{openView('free');freeSrc='jam';$('srcJam').classList.add('sel');$('srcIA').classList.remove('sel');$('jamSearch').value=b.dataset.hq;freeLoad(b.dataset.hq);});
+$('tileFav').onclick=()=>openView('library');
+$('tileFree').onclick=()=>openView('free');
 /* ================= NAV / SETTINGS / GATE ================= */
 let curView='home';
 function go(v){
